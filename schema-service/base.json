@@ -1,0 +1,14 @@
+{
+  "$schemaName": "BaseUserSchema",
+  "$schemaVersion": "1.0",
+  "$author": "John Doe",
+  "$description": "Schema for basic user information",
+  "type": "object",
+  "properties": {
+    "userId": { "type": "string" },
+    "firstName": { "type": "string" },
+    "lastName": { "type": "string" }
+  },
+  "required": ["userId", "firstName", "lastName"]
+}
+

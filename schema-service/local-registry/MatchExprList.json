@@ -1,0 +1,22 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/matchExprList/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "matchExprList",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The MatchExprList schema defines a list of expressions used in conjunction with the Match schema for evaluating conditions.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["of"],
+  "additionalProperties": false,
+  "properties": {
+    "of": {
+      "type": "array",
+      "items": {
+        "$ref": "http://registry.agsiri.com:8080/v1/schemas/match/2.8"
+      },
+      "minItems": 1
+    }
+  }
+}
+

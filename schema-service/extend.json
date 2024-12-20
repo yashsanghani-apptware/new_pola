@@ -1,0 +1,15 @@
+{
+  "$schemaName": "ExtendedUserSchema",
+  "$schemaVersion": "1.0",
+  "type": "object",
+  "allOf": [
+    { "$ref": "BaseUserSchema/1.0" },
+    {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Check if a department is an ancestor of another department.",
+  "principalPolicy": {
+    "principal": "employee",
+    "version": "1.0",
+    "rules": [
+      {
+        "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+        "actions": [
+          {
+            "action": "access",
+            "effect": "EFFECT_ALLOW",
+            "condition": {
+              "match": {
+                "expr": "hierarchy(P.attr.department).ancestorOf(hierarchy('a.b.c')) == true"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T14:00:00Z"
+  }
+}
+

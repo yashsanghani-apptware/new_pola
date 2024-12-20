@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/principalRuleAction/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "principalRuleAction",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The PrincipalRuleAction schema defines actions within a principal's rule, including conditions, notifications, and outputs.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["action", "effect"],
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["EFFECT_ALLOW", "EFFECT_DENY"]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a-z]*)*$"
+    },
+    "output": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/output/2.8"
+    },
+    "notify": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/notify/2.8"
+    }
+  }
+}
+

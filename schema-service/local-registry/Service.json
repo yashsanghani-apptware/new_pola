@@ -1,0 +1,53 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/service/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "service",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines a single service in Satori, including operations, endpoints, and retry policies.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "serviceType": { "type": "string" },
+    "myRole": { "type": "string" },
+    "serviceRole": { "type": "string" },
+    "endpoint": { "type": "string" },
+    "authentication": { "type": "string" },
+    "timeout": { "type": "integer", "description": "Timeout in milliseconds for service requests" },
+    "retryPolicy": {
+      "type": "object",
+      "properties": {
+        "retries": { "type": "integer" },
+        "delay": { "type": "integer" }
+      },
+      "required": ["retries", "delay"]
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation": { "type": "string" },
+          "method": { "type": "string" },
+          "input": { "type": "string" },
+          "output": { "type": "string" },
+          "successStatusCode": { "type": "integer" },
+          "errorStatusCodes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "integer" },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        },
+        "required": ["operation", "method", "input", "output", "successStatusCode"]
+      }
+    }
+  },
+  "required": ["id", "serviceType", "endpoint", "authentication", "operations"]
+}
+

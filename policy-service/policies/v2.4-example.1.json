@@ -1,0 +1,32 @@
+{
+  "derivedRoles": {
+    "name": "DynamicRoles",
+    "definitions": [
+      {
+        "name": "PrivilegedUser",
+        "parentRoles": ["User"],
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                { "expr": "user.department == 'Finance'" },
+                { "expr": "user.clearanceLevel >= 3" }
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "variables": {
+      "local": {
+        "department": "Finance",
+        "clearanceLevel": "3"
+      }
+    }
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-28T12:00:00Z"
+  },
+  "apiVersion": "api.pola.dev/v1"
+}

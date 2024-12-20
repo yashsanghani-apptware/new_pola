@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/faultHandlers/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "faultHandlers",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents fault handlers in a Satori process, defining catch and catch-all blocks for handling faults during execution.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "catch": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "faultName": { "type": "string" },
+          "faultVariable": { "type": "string" },
+          "activity": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/activity/2.20" },
+          "notifications": {
+            "type": "array",
+            "items": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/notify/2.20" }
+          }
+        },
+        "required": ["faultName", "activity"]
+      }
+    },
+    "catchAll": {
+      "type": "object",
+      "properties": {
+        "activity": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/activity/2.20" }
+      },
+      "required": ["activity"]
+    }
+  }
+}
+

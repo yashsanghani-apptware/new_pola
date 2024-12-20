@@ -1,0 +1,24 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/invoke/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "invoke",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents an invoke activity in a Satori process, which calls a service operation.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["invoke"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "service": { "type": "string" },
+    "operation": { "type": "string" },
+    "inputVariable": { "type": "string" },
+    "outputVariable": { "type": "string" },
+    "faultHandlers": { "$ref": "http://registry.agsiri.com/v1/schemas/faultHandlers/2.20" },
+    "compensationHandler": { "$ref": "http://registry.agsiri.com/v1/schemas/activity/2.20" },
+    "condition": { "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.20" }
+  },
+  "required": ["type", "id", "service", "operation"]
+}
+

@@ -1,0 +1,35 @@
+{
+  "name": "roleRule",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the rules that govern access control for roles in the system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Access Control",
+  "context": "Used to define rules for access control based on roles.",
+  "story": "This definition outlines the rules governing access control for specific roles in the system.",
+  "definition": {
+    "roleRule": {
+      "type": "object",
+      "required": [
+        "resource",
+        "actions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com:8080/v1/definitions/roleRuleAction/2.6"
+          },
+          "minItems": 1
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
+

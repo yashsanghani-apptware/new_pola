@@ -1,0 +1,28 @@
+{
+  "name": "matchExprList",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines an expression list used in matching conditions for the policy.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Matching Logic",
+  "context": "Used to evaluate match conditions within policies.",
+  "story": "This definition provides the structure for handling lists of expressions in match-based conditions.",
+  "definition": {
+    "matchExprList": {
+      "type": "object",
+      "required": ["of"],
+      "additionalProperties": false,
+      "properties": {
+        "of": {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com:8080/v1/definitions/match/2.6"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
+

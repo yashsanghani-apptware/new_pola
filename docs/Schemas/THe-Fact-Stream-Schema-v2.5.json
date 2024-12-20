@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/factstream.schema.json",
+  "title": "Fact Stream",
+  "description": "Schema for representing a collection of facts related to actor interactions within the Pola system.",
+  "type": "object",
+  "required": ["type", "id", "totalItems", "items"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "Specifies that this object is a collection of Activities.",
+      "enum": ["Collection", "OrderedCollection"]
+    },
+    "id": {
+      "type": "string",
+      "format": "uri",
+      "description": "Unique identifier for the Fact Stream."
+    },
+    "totalItems": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Total number of Activity objects in the collection."
+    },
+    "items": {
+      "type": "array",
+      "description": "Array of Activity objects or references to Activity objects.",
+      "items": {
+        "$ref": "#/definitions/pola.factstream.v2.5.Activity"
+      }
+    },
+    "context": {
+      "$ref": "#/definitions/pola.factstream.v2.5.Context"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional metadata for the fact stream.",
+      "properties": {
+        "source": {
+          "type": "string",
+          "description": "Source of the fact stream."
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Identifier of the creator of the fact stream."
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "definitions": {
+    "pola.factstream.v2.5.Activity": {
+      "type": "object",
+      "required": ["type", "id", "actor", "summary", "object", "timestamp"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Specifies the type of Activity (e.g., Create, Update, Access, Delete).",
+          "enum": ["Create", "Update", "Delete", "Access", "PolicyEvaluation", "AnomalyDetection"]
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier for the Activity."
+        },
+        "actor": {
+          "$ref": "#/definitions/pola.factstream.v2.5.Actor"
+        },
+        "summary": {
+          "type": "string",
+          "description": "A brief summary of the activity."
+        },
+        "object": {
+          "$ref": "#/definitions/pola.factstream.v2.5.Object"
+        },
+        "target": {
+          "$ref": "#/definitions/pola.factstream.v2.5.Target"
+        },
+        "result": {
+          "$ref": "#/definitions/pola.factstream.v2.5.Result"
+        },
+        "context": {
+          "$ref": "#/definitions/pola.factstream.v2.5.Context"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the activity occurred."
+        },
+        "metadata": {
+          "type": "object",
+          "description": "Additional metadata related to the activity.",
+          "properties": {
+            "policyId": {
+              "type": "string",
+              "description": "Identifier of the policy associated with the activity."
+            },
+            "relatedActivities": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uri"
+              },
+              "description": "List of URIs to related activities."
+            }
+          },
+          "additionalProperties": true
+        }
+      }
+    },
+    "pola.factstream.v2.5.Actor": {
+      "type": "object",
+      "required": ["type", "id", "name"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of actor involved in the activity.",
+          "enum": ["Person", "Organization", "Group", "Application", "Service"]
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier of the actor."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the actor."
+        }
+      }
+    },
+    "pola.factstream.v2.5.Object": {
+      "type": "object",
+      "required": ["type", "id"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of object involved in the activity (e.g., Resource, Policy, Data).",
+          "enum": ["Resource", "Policy", "Data", "File", "Document"]
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier of the object."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the object."
+        }
+      }
+    },
+    "pola.factstream.v2.5.Target": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of target involved in the activity.",
+          "enum": ["Resource", "User", "Role"]
+        },
+        "id": {
+          "type": "string",
+          "format": "uri",
+          "description": "Unique identifier of the target."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the target."
+        }
+      }
+    },
+    "pola.factstream.v2.5.Result": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of result (e.g., Success, Failure, Deny, Allow).",
+          "enum": ["Success", "Failure", "Deny", "Allow"]
+        },
+        "details": {
+          "type": "string",
+          "description": "Detailed description of the result."
+        }
+      }
+    },
+    "pola.factstream.v2.5.Context": {
+      "type": "object",
+      "description": "Contextual details that may influence actor interactions and behaviors.",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uri",
+              "description": "Unique identifier of the user."
+            },
+            "role": {
+              "type": "string",
+              "description": "Role of the user."
+            }
+          },
+          "additionalProperties": true
+        },
+        "resource": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uri",
+              "description": "Unique identifier of the resource."
+            },
+            "type": {
+              "type": "string",
+              "description": "Type of the resource."
+            }
+          },
+          "additionalProperties": true
+        },
+        "environment": {
+          "type": "object",
+          "properties": {
+            "region": {
+              "type": "string",
+              "description": "Geographic region associated with the context."
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp of the context data."
+            },
+            "ip": {
+              "type": "string",
+              "format": "ipv4",
+              "description": "IP address from which the activity originated."
+            },
+            "device": {
+              "type": "string",
+              "description": "Type of device used for the activity."
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
+

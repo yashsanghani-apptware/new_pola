@@ -1,0 +1,26 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/groupRule/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "groupRule",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The GroupRule schema defines the actions and resources associated with a group, including conditions and notifications.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["resource", "actions"],
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "http://registry.agsiri.com/v1/schemas/groupRuleAction/2.8"
+      },
+      "minItems": 1
+    },
+    "resource": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
+

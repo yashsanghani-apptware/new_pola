@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/groupRuleAction/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "groupRuleAction",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The GroupRuleAction schema defines the actions and effects associated with a group's rule, including allow or deny actions.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["action", "effect"],
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["EFFECT_ALLOW", "EFFECT_DENY"]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a-z]*)*$"
+    },
+    "output": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/output/2.8"
+    },
+    "notify": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/notify/2.8"
+    }
+  }
+}
+

@@ -1,0 +1,28 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/forEach/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "forEach",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a 'forEach' loop activity in a Satori process, iterating over a collection of items and optionally processing in parallel.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["forEach"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "parallel": { "type": "boolean" },
+    "startCounterValue": { "type": "integer" },
+    "finalCounterValue": { "type": "integer" },
+    "completionCondition": {
+      "type": "object",
+      "properties": {
+        "branches": { "type": "integer" },
+        "successfulBranchesOnly": { "type": "boolean" }
+      }
+    },
+    "activity": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/activity/2.20" }
+  },
+  "required": ["type", "id", "startCounterValue", "finalCounterValue", "activity"]
+}
+

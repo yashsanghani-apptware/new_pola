@@ -1,0 +1,14 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "exportVariables": {
+    "name": "incident_management_webhook",
+    "definitions": {
+      "webhook_url": "\"https://incident-management.example.com/webhook\""
+    }
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:34:56Z"
+  }
+}
+

@@ -1,0 +1,43 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/match/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "match",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The Match schema allows matching conditions like 'all', 'any', 'none', and 'expr' to be defined and used within the Condition schema.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "all": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/matchExprList/2.8"
+    },
+    "any": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/matchExprList/2.8"
+    },
+    "expr": {
+      "type": "string"
+    },
+    "none": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/matchExprList/2.8"
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["all"]
+    },
+    {
+      "type": "object",
+      "required": ["any"]
+    },
+    {
+      "type": "object",
+      "required": ["none"]
+    },
+    {
+      "type": "object",
+      "required": ["expr"]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Check if geography is GB within a Principal Policy.",
+  "principalPolicy": {
+    "principal": "user",
+    "version": "1.0",
+    "rules": [
+      {
+        "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+        "actions": [
+          {
+            "action": "view",
+            "effect": "EFFECT_ALLOW",
+            "condition": {
+              "match": {
+                "expr": "'GB' in P.attr.geographies"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T13:20:00Z"
+  }
+}

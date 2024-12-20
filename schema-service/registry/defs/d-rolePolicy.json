@@ -1,0 +1,45 @@
+{
+  "name": "rolePolicy",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the policy that governs access control for roles in the system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Access Control",
+  "context": "Used to manage access control for roles in the system.",
+  "story": "This definition manages the policies related to access control for roles within the system.",
+  "definition": {
+    "rolePolicy": {
+      "type": "object",
+      "required": [
+        "role",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "role": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com:8080/v1/definitions/roleRule/2.6"
+          }
+        },
+        "scope": {
+          "type": "string",
+          "pattern": "^([0-9A-Za-z][\\-0-9A-Z_a_z]*(\\.[\\-0-9A-Z_a_z]*)*)*$"
+        },
+        "variables": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/variables/2.6"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)*$"
+        }
+      }
+    }
+  }
+}
+

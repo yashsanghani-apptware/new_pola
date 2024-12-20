@@ -1,0 +1,428 @@
+{
+  "$id": "https://api.pola.dev/v2.3/agsiri/policy/v2.3/policy.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "pola.policy.v2.3.Condition": {
+      "allOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "match": {
+              "$ref": "#/definitions/pola.policy.v2.3.Match"
+            },
+            "script": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "match"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "script"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "pola.policy.v2.3.Match": {
+      "allOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all": {
+              "$ref": "#/definitions/pola.policy.v2.3.Match.ExprList"
+            },
+            "any": {
+              "$ref": "#/definitions/pola.policy.v2.3.Match.ExprList"
+            },
+            "expr": {
+              "type": "string"
+            },
+            "none": {
+              "$ref": "#/definitions/pola.policy.v2.3.Match.ExprList"
+            }
+          }
+        },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "required": [
+                "all"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "any"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "none"
+              ]
+            },
+            {
+              "type": "object",
+              "required": [
+                "expr"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "pola.policy.v2.3.Match.ExprList": {
+      "type": "object",
+      "required": [
+        "of"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "of": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pola.policy.v2.3.Match"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "pola.policy.v2.3.Metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "hash": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "pattern": "^(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+            }
+          ]
+        },
+        "sourceAttributes": {
+          "$ref": "#/definitions/pola.policy.v2.3.SourceAttributes"
+        },
+        "sourceFile": {
+          "type": "string"
+        },
+        "storeIdentifier": {
+          "type": "string"
+        }
+      }
+    },
+    "pola.policy.v2.3.Output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expr": {
+          "type": "string"
+        },
+        "when": {
+          "$ref": "#/definitions/pola.policy.v2.3.Output.When"
+        }
+      }
+    },
+    "pola.policy.v2.3.Output.When": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conditionNotMet": {
+          "type": "string"
+        },
+        "ruleActivated": {
+          "type": "string"
+        }
+      }
+    },
+    "pola.policy.v2.3.Notify": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "service": {
+          "type": "string",
+          "enum": ["webservice", "pubsub", "queue"]
+        },
+        "serviceConfig": {
+          "type": "object",
+          "properties": {
+            "url": {
+              "type": "string",
+              "format": "uri"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["POST", "PUT"]
+            },
+            "headers": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "topic": {
+              "type": "string"
+            },
+            "queueName": {
+              "type": "string"
+            },
+            "messageGroupId": {
+              "type": "string"
+            }
+          },
+          "oneOf": [
+            {
+              "required": ["url", "method"]
+            },
+            {
+              "required": ["topic"]
+            },
+            {
+              "required": ["queueName"]
+            }
+          ]
+        },
+        "payloadSchema": {
+          "$ref": "#/definitions/pola.policy.v2.3.Schemas.Schema"
+        },
+        "when": {
+          "$ref": "#/definitions/pola.policy.v2.3.Notify.When"
+        }
+      }
+    },
+    "pola.policy.v2.3.Notify.When": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conditionMet": {
+          "type": "string"
+        },
+        "ruleActivated": {
+          "type": "string"
+        }
+      }
+    },
+    "pola.policy.v2.3.EventPolicy": {
+      "type": "object",
+      "required": [
+        "event",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "type": "string",
+          "minLength": 1
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "conditions": {
+          "$ref": "#/definitions/pola.policy.v2.3.Condition"
+        },
+        "metadata": {
+          "$ref": "#/definitions/pola.policy.v2.3.Metadata"
+        },
+        "output": {
+          "$ref": "#/definitions/pola.policy.v2.3.Output"
+        },
+        "notify": {
+          "$ref": "#/definitions/pola.policy.v2.3.Notify"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)*$"
+        }
+      }
+    },
+    "pola.policy.v2.3.Schemas.Schema": {
+      "type": "object",
+      "required": [
+        "ref"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "ignoreWhen": {
+          "$ref": "#/definitions/pola.policy.v2.3.Schemas.IgnoreWhen"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pola.policy.v2.3.Schemas.IgnoreWhen": {
+      "type": "object",
+      "required": [
+        "actions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "pola.policy.v2.3.AuditInfo": {
+      "type": "object",
+      "required": ["createdBy"],
+      "additionalProperties": false,
+      "properties": {
+        "createdBy": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedBy": {
+          "type": "string"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "type": "object",
+      "required": [
+        "apiVersion"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "apiVersion": {
+          "type": "string",
+          "const": "api.pola.dev/v2.3"
+        },
+        "derivedRoles": {
+          "$ref": "#/definitions/pola.policy.v2.3.DerivedRoles"
+        },
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "exportVariables": {
+          "$ref": "#/definitions/pola.policy.v2.3.ExportVariables"
+        },
+        "metadata": {
+          "$ref": "#/definitions/pola.policy.v2.3.Metadata"
+        },
+        "principalPolicy": {
+          "$ref": "#/definitions/pola.policy.v2.3.PrincipalPolicy"
+        },
+        "resourcePolicy": {
+          "$ref": "#/definitions/pola.policy.v2.3.ResourcePolicy"
+        },
+        "rolePolicy": {
+          "$ref": "#/definitions/pola.policy.v2.3.RolePolicy"
+        },
+        "groupPolicy": {
+          "$ref": "#/definitions/pola.policy.v2.3.GroupPolicy"
+        },
+        "eventPolicy": {
+          "$ref": "#/definitions/pola.policy.v2.3.EventPolicy"
+        },
+        "auditInfo": {
+          "$ref": "#/definitions/pola.policy.v2.3.AuditInfo"
+        },
+        "variables": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "resourcePolicy"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "principalPolicy"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "rolePolicy"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "groupPolicy"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "derivedRoles"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "exportVariables"
+          ]
+        },
+        {
+          "type": "object",
+          "required": [
+            "eventPolicy"
+          ]
+        }
+      ]
+    }
+  ]
+}
+

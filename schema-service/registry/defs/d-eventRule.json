@@ -1,0 +1,34 @@
+{
+  "name": "eventRule",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the rules governing event actions and conditions within the system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Event Management",
+  "context": "Used to specify rules for event actions and conditions within the system.",
+  "story": "This definition outlines the rules that define actions and conditions for events within the system.",
+  "definition": {
+    "eventRule": {
+      "type": "object",
+      "required": [
+        "conditions",
+        "actions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "conditions": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/condition/2.6"
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com:8080/v1/definitions/eventRuleAction/2.6"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
+

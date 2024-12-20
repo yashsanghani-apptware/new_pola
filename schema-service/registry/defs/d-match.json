@@ -1,0 +1,38 @@
+{
+  "name": "match",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines match conditions such as 'all', 'any', 'expr', and 'none' for evaluating policies.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Matching Logic",
+  "context": "Match conditions used to evaluate policies.",
+  "story": "This definition is used to describe various match conditions within policies.",
+  "definition": {
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "all": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/matchExprList/2.6"
+        },
+        "any": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/matchExprList/2.6"
+        },
+        "expr": {
+          "type": "string"
+        },
+        "none": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/matchExprList/2.6"
+        }
+      },
+      "oneOf": [
+        { "type": "object", "required": ["all"] },
+        { "type": "object", "required": ["any"] },
+        { "type": "object", "required": ["none"] },
+        { "type": "object", "required": ["expr"] }
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,30 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/condition/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "condition",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The Condition schema defines match conditions and optional script evaluation for applying certain rules.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "match": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/match/2.8"
+    },
+    "script": {
+      "type": "string"
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["match"]
+    },
+    {
+      "type": "object",
+      "required": ["script"]
+    }
+  ]
+}
+

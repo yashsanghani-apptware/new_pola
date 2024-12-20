@@ -1,0 +1,162 @@
+import mongoose, { ObjectId } from 'mongoose';
+import  PolicyModel  from '../../src/models/policy'; // Assuming PolicyModel is defined and imported
+import { MembershipResolver } from '../../src/services/MembershipResolver'; // Assuming MembershipResolver is defined and imported
+import { Resource } from '../../src/models/resource'; // Assuming ResourceModel is defined and imported
+
+class PermissionResolver {
+  private membershipResolver: MembershipResolver;
+
+  constructor(membershipResolver: MembershipResolver) {
+    this.membershipResolver = membershipResolver;
+  }
+
+  /**
+   * Resolves the permitted actions for a given principal on a specific resource.
+   * 
+   * @param principalId - The ID of the principal (user).
+   * @param resourceAri - The ARI of the resource.
+   * @returns A promise that resolves to an array of permitted actions.
+   */
+  async resolvePermittedActions(principalId: ObjectId, resourceAri: string): Promise<string[]> {
+    const permittedActions = new Set<string>();
+
+    console.log(`Resolving permitted actions for principalId: ${principalId} on resource: ${resourceAri}`);
+
+    // Step 1: Aggregate Policies
+    const policies = await this.aggregatePolicies(principalId, resourceAri);
+
+    // Step 2: Evaluate each policy and determine allowed actions
+    for (const policy of policies) {
+      if (policy.resourcePolicy && policy.resourcePolicy.resource === resourceAri) {
+        console.log(`Evaluating resource policy: ${policy.name}`);
+
+        // Check if conditions are met
+        const conditionsMet = this.evaluateConditions(policy.resourcePolicy.conditions, principalId, resourceAri);
+
+        if (conditionsMet) {
+          // Add allowed actions from the policy
+          policy.resourcePolicy.actions.forEach(action => permittedActions.add(action));
+        }
+      } else if (policy.principalPolicy || policy.rolePolicy || policy.groupPolicy) {
+        console.log(`Evaluating policy: ${policy.name}`);
+        
+        // Evaluate conditions and actions based on non-resource policies
+        const actions = this.evaluateNonResourcePolicy(policy, principalId, resourceAri);
+        actions.forEach(action => permittedActions.add(action));
+      }
+
+      // Apply SCP restrictions
+      if (policy.serviceControlPolicy) {
+        console.log(`Applying SCP: ${policy.name}`);
+
+        // Restrict the permitted actions based on SCP
+        const restrictedActions = this.applySCP(policy.serviceControlPolicy, Array.from(permittedActions));
+        permittedActions.clear();
+        restrictedActions.forEach(action => permittedActions.add(action));
+      }
+    }
+
+    console.log(`Resolved permitted actions for principalId ${principalId} on resource ${resourceAri}:`, Array.from(permittedActions));
+
+    return Array.from(permittedActions);
+  }
+
+  /**
+   * Aggregates all relevant policies for the given principal and resource.
+   * 
+   * @param principalId - The ID of the principal (user).
+   * @param resourceAri - The ARI of the resource.
+   * @returns A promise that resolves to an array of policies.
+   */
+  private async aggregatePolicies(principalId: ObjectId, resourceAri: string): Promise<any[]> {
+    const policies = [];
+
+    // Aggregate principal, group, role, resource, and SCP policies
+    const principalPolicies = await this.membershipResolver.resolvePrincipalPolicies(principalId);
+    const groups = await this.membershipResolver.resolvePrincipalGroups(principalId);
+    const roles = await this.membershipResolver.resolvePrincipalRoles(principalId);
+
+    // Add principal policies
+    policies.push(...principalPolicies);
+
+    // Add group policies
+    for (const groupId of groups) {
+      const groupPolicies = await PolicyModel.find({ 'groupPolicy.group': groupId });
+      policies.push(...groupPolicies);
+    }
+
+    // Add role policies
+    for (const roleId of roles) {
+      const rolePolicies = await PolicyModel.find({ 'rolePolicy.role': roleId });
+      policies.push(...rolePolicies);
+    }
+
+    // Add resource policies
+    const resourcePolicies = await PolicyModel.find({ 'resourcePolicy.resource': resourceAri });
+    policies.push(...resourcePolicies);
+
+    // Add SCPs
+    const scps = await PolicyModel.find({
+      $or: [
+        { 'serviceControlPolicy.boundEntities.users': principalId },
+        { 'serviceControlPolicy.boundEntities.groups': { $in: groups } },
+        { 'serviceControlPolicy.boundEntities.roles': { $in: roles } }
+      ]
+    });
+    policies.push(...scps);
+
+    return policies;
+  }
+
+  /**
+   * Evaluates conditions for a policy.
+   * 
+   * @param conditions - The conditions to evaluate.
+   * @param principalId - The ID of the principal (user).
+   * @param resourceAri - The ARI of the resource.
+   * @returns A boolean indicating whether the conditions are met.
+   */
+  private evaluateConditions(conditions: any, principalId: ObjectId, resourceAri: string): boolean {
+    // Evaluate policy conditions (match, script, etc.)
+    // This is a placeholder for the actual condition evaluation logic
+    return true; // Assume all conditions are met for this example
+  }
+
+  /**
+   * Evaluates non-resource policies and returns allowed actions.
+   * 
+   * @param policy - The policy to evaluate.
+   * @param principalId - The ID of the principal (user).
+   * @param resourceAri - The ARI of the resource.
+   * @returns An array of allowed actions.
+   */
+  private evaluateNonResourcePolicy(policy: any, principalId: ObjectId, resourceAri: string): string[] {
+    const actions: string[] = [];
+    // Evaluate principal, role, and group policies and extract allowed actions
+    if (policy.principalPolicy) {
+      actions.push(...policy.principalPolicy.actions);
+    }
+    if (policy.rolePolicy) {
+      actions.push(...policy.rolePolicy.actions);
+    }
+    if (policy.groupPolicy) {
+      actions.push(...policy.groupPolicy.actions);
+    }
+    return actions;
+  }
+
+  /**
+   * Applies SCP (Service Control Policies) to restrict the allowed actions.
+   * 
+   * @param scp - The Service Control Policy to apply.
+   * @param actions - The current set of allowed actions.
+   * @returns A restricted array of actions based on the SCP.
+   */
+  private applySCP(scp: any, actions: string[]): string[] {
+    // Apply SCP restrictions to the permitted actions
+    return actions.filter(action => scp.maxPermissions.includes(action));
+  }
+}
+
+export default PermissionResolver;
+

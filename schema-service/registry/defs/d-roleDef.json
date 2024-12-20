@@ -1,0 +1,40 @@
+{
+  "name": "roleDef",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the structure of role definitions within the policy system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Access Control",
+  "context": "Used to define the hierarchical structure of roles within the system.",
+  "story": "This definition manages role definitions and the relationships between parent roles.",
+  "definition": {
+    "roleDef": {
+      "type": "object",
+      "required": [
+        "name",
+        "parentRoles"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/condition/2.6"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+        },
+        "parentRoles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,26 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/exportVariables/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "exportVariables",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The ExportVariables schema defines the variables that can be exported from a particular context, such as a policy or rule.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["name"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[\\-\\.0-9A-Z_a_z]+$"
+    },
+    "definitions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  }
+}
+

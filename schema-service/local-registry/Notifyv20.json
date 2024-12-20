@@ -1,0 +1,60 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/notify/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "notify",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a notification within a Satori process, defining when and how notifications are sent.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "name": {
+      "type": "string",
+      "description": "A human-readable name for this notification."
+    },
+    "when": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/notifyWhen/2.20",
+      "description": "Conditions for triggering the notification."
+    },
+    "recipients": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Recipients of the notification."
+    },
+    "delivery": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "enum": ["webservice", "pubsub", "queue", "email"],
+          "description": "Delivery method."
+        },
+        "serviceConfig": {
+          "type": "object",
+          "properties": {
+            "url": { "type": "string", "format": "uri" },
+            "method": {
+              "type": "string",
+              "enum": ["POST", "PUT"]
+            }
+          },
+          "required": ["url", "method"]
+        },
+        "emailConfig": {
+          "type": "object",
+          "properties": {
+            "subject": { "type": "string" },
+            "body": { "type": "string" }
+          }
+        }
+      }
+    },
+    "payload": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/schemasSchema/2.20",
+      "description": "Schema for the notification payload."
+    }
+  },
+  "required": ["id", "when", "delivery", "payload"]
+}
+

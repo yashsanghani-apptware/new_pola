@@ -1,0 +1,34 @@
+{
+  "name": "variables",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines importable and local variables that can be referenced and used within various policies, rules, or roles.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Variables Management",
+  "context": "Used for defining variables for policies and conditions.",
+  "story": "The variables definition allows referencing importable and local variables in different policy scenarios.",
+  "definition": {
+    "variables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "import": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+          },
+          "uniqueItems": true
+        },
+        "local": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+

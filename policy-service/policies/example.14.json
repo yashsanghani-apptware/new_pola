@@ -1,0 +1,23 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Assign 'TeamViewer' role if the principal is part of design or engineering.",
+  "derivedRoles": {
+    "name": "TeamRoles",
+    "definitions": [
+      {
+        "name": "TeamViewer",
+        "parentRoles": ["viewer"],
+        "condition": {
+          "match": {
+            "expr": "hasIntersection(['design', 'engineering'], P.attr.teams)"
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T14:10:00Z"
+  }
+}
+

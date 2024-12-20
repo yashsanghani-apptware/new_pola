@@ -1,0 +1,65 @@
+{
+  "name": "serviceControlPolicy",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the service control policy, specifying maximum permissions and binding entities.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Service Management",
+  "context": "Used to define service control policies related to users, groups, roles, and resources.",
+  "story": "This definition manages the service control policy to enforce maximum permissions and bindings.",
+  "definition": {
+    "serviceControlPolicy": {
+      "type": "object",
+      "required": [
+        "maxPermissions",
+        "version"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "maxPermissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "boundEntities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "users": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "groups": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+(\\.[0-9]+)*$"
+        }
+      }
+    }
+  }
+}
+

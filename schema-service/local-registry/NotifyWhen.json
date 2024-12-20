@@ -1,0 +1,20 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/notifyWhen/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "notifyWhen",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The NotifyWhen schema specifies the conditions under which notifications are triggered, such as when a rule is activated or a condition is met.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "conditionMet": {
+      "type": "string"
+    },
+    "ruleActivated": {
+      "type": "string"
+    }
+  }
+}
+

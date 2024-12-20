@@ -1,0 +1,31 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/roleDef/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "roleDef",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The RoleDef schema defines individual roles, including conditions, parent roles, and other metadata related to role-based access control.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["name", "parentRoles"],
+  "additionalProperties": false,
+  "properties": {
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+    },
+    "parentRoles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}
+

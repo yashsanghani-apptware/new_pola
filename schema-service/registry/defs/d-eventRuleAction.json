@@ -1,0 +1,54 @@
+{
+  "name": "eventRuleAction",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines the actions and conditions for event-driven rules in the system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Event Management",
+  "context": "Used to specify actions in event-driven rules.",
+  "story": "This definition outlines the actions and conditions for event-driven rules in the system.",
+  "definition": {
+    "eventRuleAction": {
+      "type": "object",
+      "required": [
+        "action",
+        "effect"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "NOTIFY",
+            "LOG",
+            "ALERT",
+            "APPROVE",
+            "REVIEW"
+          ]
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "EFFECT_ALLOW",
+            "EFFECT_DENY"
+          ]
+        },
+        "condition": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/condition/2.6"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a_z]*)*$"
+        },
+        "notify": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/notify/2.6"
+        },
+        "output": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/output/2.6"
+        }
+      }
+    }
+  }
+}
+

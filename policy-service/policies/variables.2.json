@@ -1,0 +1,16 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "exportVariables": {
+    "name": "apatr_common_variables",
+    "definitions": {
+      "flagged_resource": "request.resource.attr.flagged",
+      "label": "\"latest\"",
+      "teams": "[\"red\", \"blue\"]"
+    }
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:34:56Z"
+  }
+}
+

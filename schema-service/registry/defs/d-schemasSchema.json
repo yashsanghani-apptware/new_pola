@@ -1,0 +1,28 @@
+{
+  "name": "schemasSchema",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines a structure for schema reference, with optional ignore conditions and other attributes.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Schema Management",
+  "context": "Used for referencing other schemas with conditions within policies.",
+  "story": "The schemasSchema definition provides a structure for schema references with optional conditions for ignoring actions.",
+  "definition": {
+    "schemasSchema": {
+      "type": "object",
+      "required": ["ref"],
+      "additionalProperties": false,
+      "properties": {
+        "ignoreWhen": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/schemasIgnoreWhen/2.6"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
+

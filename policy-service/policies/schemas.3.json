@@ -1,0 +1,37 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "resourcePolicy": {
+    "version": "1.0",
+    "resource": "project:object",
+    "schemas": {
+      "principalSchema": {
+        "ref": "agsiri:///principal.json"
+      },
+      "resourceSchema": {
+        "ref": "agsiri:///project/object.json"
+      }
+    },
+    "rules": [
+      {
+        "actions": ["edit"],
+        "effect": "EFFECT_ALLOW",
+        "roles": ["editor"],
+        "condition": {
+          "match": {
+            "expr": "request.resource.attr.status == 'in_progress'"
+          }
+        }
+      },
+      {
+        "actions": ["view"],
+        "effect": "EFFECT_ALLOW",
+        "roles": ["viewer"]
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:34:56Z"
+  }
+}
+

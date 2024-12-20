@@ -1,0 +1,75 @@
+[
+  {
+    "description": "Admin tries to edit any resource",
+    "requestParams": {
+      "principalId": "adminUser",
+      "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/projectAlpha",
+      "actions": ["edit"],
+      "environment": {},
+      "variables": {
+        "userRole": "admin"
+      }
+    },
+    "expectedResult": "ALLOW",
+    "explanation": "Admin should have full access to all resources."
+  },
+  {
+    "description": "Manager tries to edit Project Alpha",
+    "requestParams": {
+      "principalId": "managerUser",
+      "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/projectAlpha",
+      "actions": ["edit"],
+      "environment": {},
+      "variables": {
+        "userRole": "manager",
+        "project": "Alpha"
+      }
+    },
+    "expectedResult": "ALLOW",
+    "explanation": "Manager should have access to edit Project Alpha."
+  },
+  {
+    "description": "Regular user tries to read sensitive file",
+    "requestParams": {
+      "principalId": "regularUser",
+      "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/sensitiveFiles/file1",
+      "actions": ["read"],
+      "environment": {},
+      "variables": {
+        "fileClassification": "sensitive"
+      }
+    },
+    "expectedResult": "DENY",
+    "explanation": "Regular users should not have access to read sensitive files."
+  },
+  {
+    "description": "Manager tries to edit a different project",
+    "requestParams": {
+      "principalId": "managerUser",
+      "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/projectBeta",
+      "actions": ["edit"],
+      "environment": {},
+      "variables": {
+        "userRole": "manager",
+        "project": "Beta"
+      }
+    },
+    "expectedResult": "DENY",
+    "explanation": "Manager should only have access to Project Alpha, not Project Beta."
+  },
+  {
+    "description": "Admin tries to delete a resource",
+    "requestParams": {
+      "principalId": "adminUser",
+      "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/projectAlpha",
+      "actions": ["delete"],
+      "environment": {},
+      "variables": {
+        "userRole": "admin"
+      }
+    },
+    "expectedResult": "ALLOW",
+    "explanation": "Admin should have the ability to delete any resource."
+  }
+]
+

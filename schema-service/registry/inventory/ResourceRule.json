@@ -1,0 +1,57 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/resourceRule/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "resourceRule",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The ResourceRule schema defines the actions, conditions, and roles for managing resources, including allow or deny effects.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["actions", "effect"],
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "derivedRoles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+      },
+      "uniqueItems": true
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["EFFECT_ALLOW", "EFFECT_DENY"]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a-z]*)*$"
+    },
+    "output": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/output/2.8"
+    },
+    "notify": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/notify/2.8"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  }
+}
+

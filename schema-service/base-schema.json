@@ -1,0 +1,11 @@
+{
+  "$schemaName": "BaseUserSchema",
+  "$schemaVersion": "1.0",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" }
+  },
+  "required": ["id", "name"]
+}
+

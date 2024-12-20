@@ -1,0 +1,41 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/whenThen/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "whenThen",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a 'when' condition in the Satori process, paired with actions or activities to execute when the condition is met.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": {
+      "enum": ["when"]
+    },
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.20",
+      "description": "A condition to evaluate whether actions should be triggered."
+    },
+    "then": {
+      "oneOf": [
+        {
+          "$ref": "http://registry.agsiri.com/v1/schemas/activity/2.20"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com/v1/schemas/activity/2.20"
+          },
+          "description": "An array of activities to execute when the condition is met."
+        }
+      ]
+    }
+  },
+  "required": ["type", "id", "condition", "then"]
+}
+

@@ -1,0 +1,24 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Allow access if the resource was last accessed in 2021.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": ["access"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "timestamp(R.attr.lastAccessed).getFullYear() == 2021"
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T14:40:00Z"
+  }
+}
+

@@ -1,0 +1,25 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Allow actions only if more than 36 hours have passed since the last access.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": ["edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "timestamp(R.attr.lastAccessed) - timestamp(R.attr.lastUpdateTime) > duration('36h')"
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "
+
+admin",
+    "createdAt": "2024-08-19T13:50:00Z"
+  }
+}

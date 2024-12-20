@@ -1,0 +1,35 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "resourcePolicy": {
+    "version": "1.0",
+    "resource": "ari:resource:example:document/123456",
+    "variables": {
+      "local": {
+        "flagged_resource": "request.resource.attr.flagged",
+        "label": "\"latest\"",
+        "teams": "[\"red\", \"blue\"]"
+      }
+    },
+    "rules": [
+      {
+        "actions": ["view", "edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                { "expr": "V.flagged_resource == false" },
+                { "expr": "P.attr.department in V.teams" }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:34:56Z"
+  }
+}
+

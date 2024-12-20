@@ -1,0 +1,25 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/eventRule/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "eventRule",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The EventRule schema defines the conditions and actions for specific events, including rules for notifications and outputs.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["conditions", "actions"],
+  "additionalProperties": false,
+  "properties": {
+    "conditions": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "http://registry.agsiri.com/v1/schemas/eventRuleAction/2.8"
+      },
+      "minItems": 1
+    }
+  }
+}
+

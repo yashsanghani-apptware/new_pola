@@ -1,0 +1,20 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/outputWhen/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "outputWhen",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The OutputWhen schema defines conditions that trigger outputs, such as when a condition is not met or a rule is activated.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "conditionNotMet": {
+      "type": "string"
+    },
+    "ruleActivated": {
+      "type": "string"
+    }
+  }
+}
+

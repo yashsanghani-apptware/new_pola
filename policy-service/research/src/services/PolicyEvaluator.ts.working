@@ -1,0 +1,166 @@
+import PolicyModel from '../models/policy';
+import PrincipalPolicyModel from '../models/principalPolicy';
+import { ResourcePolicy, Action, Condition, Match, DerivedRole, PrincipalPolicy, ResourceRule } from '../models/types';
+import mongoose from 'mongoose';
+import { LeanDocument } from 'mongoose';
+
+interface RequestParams {
+  principalId: string;
+  resourceId: string;
+  actions: string[];
+  environment?: any; // Environmental variables like time of day, location, etc.
+  variables?: { [key: string]: any }; // Imported and Exported Variables
+}
+
+class PolicyEvaluator {
+  constructor() {
+    // Initialization, if needed
+  }
+
+  private async buildContext(requestParams: RequestParams) {
+    const context = {
+      principalId: requestParams.principalId,
+      resourceId: requestParams.resourceId,
+      actions: requestParams.actions,
+      environment: requestParams.environment || {},
+      variables: requestParams.variables || {},
+    };
+
+    return context;
+  }
+
+  private async getRelevantPolicies(principalId: string, resourceId: string): Promise<{ principalPolicies: LeanDocument<PrincipalPolicy>[], resourcePolicies: LeanDocument<ResourcePolicy>[] }> {
+    // Retrieve relevant principal policies from MongoDB
+    const principalPolicies = await PrincipalPolicyModel.find({
+      'principalPolicy.principal': principalId,
+    }).lean();
+
+    // Retrieve relevant resource policies from MongoDB
+    const policyDocuments = await PolicyModel.find({
+      'resourcePolicy.resource': { $regex: new RegExp(`^${resourceId.replace('*', '.*')}$`) },
+    }).lean();
+
+    // Extract only the resourcePolicies from the retrieved documents
+    const resourcePolicies: LeanDocument<ResourcePolicy>[] = policyDocuments
+      .filter(doc => doc.resourcePolicy)
+      .map(doc => doc.resourcePolicy as LeanDocument<ResourcePolicy>);
+
+    return { principalPolicies, resourcePolicies };
+  }
+
+  private evaluateCondition(condition: Condition, context: any): boolean {
+    if (condition.match) {
+      return this.evaluateMatch(condition.match, context);
+    }
+    if (condition.script) {
+      // Execute script-based condition
+      return this.evaluateScript(condition.script, context);
+    }
+    return false;
+  }
+
+  private evaluateMatch(match: Match, context: any): boolean {
+    if (match.all) {
+      return match.all.of.every((subMatch) => this.evaluateMatch(subMatch, context));
+    }
+    if (match.any) {
+      return match.any.of.some((subMatch) => this.evaluateMatch(subMatch, context));
+    }
+    if (match.none) {
+      return !match.none.of.some((subMatch) => this.evaluateMatch(subMatch, context));
+    }
+    if (match.expr) {
+      // Evaluate expression in context
+      return eval(match.expr); // Be cautious with eval, or use a safer evaluation method
+    }
+    return false;
+  }
+
+  private evaluateScript(script: string, context: any): boolean {
+    // This is a placeholder for script evaluation. In a real implementation, you'd
+    // use a proper JavaScript engine like vm2 or similar to safely evaluate scripts.
+    return eval(script);
+  }
+
+  private applyDerivedRoles(derivedRoles: DerivedRole[], context: any): boolean {
+    return derivedRoles.some((role) => {
+      if (role.definitions) {
+        return role.definitions.some(def => this.evaluateCondition(def.condition!, context));
+      }
+      return false;
+    });
+  }
+
+  private evaluateAction(action: Action, context: any): boolean {
+    if (action.condition) {
+      return this.evaluateCondition(action.condition, context);
+    }
+    return true; // If no condition, assume action is allowed
+  }
+
+  private resolveResourcePolicyConflicts(policies: LeanDocument<ResourcePolicy>[], context: any): string {
+    let decision = 'DENY';
+
+    policies.forEach((policy) => {
+      const resourcePolicy: ResourcePolicy = policy;
+      resourcePolicy.rules.forEach((rule: ResourceRule) => {
+        if (rule.actions.some((action) => context.actions.includes(action))) {
+          const allow = rule.effect === 'EFFECT_ALLOW' && this.evaluateAction({ action: rule.actions[0], ...rule }, context);
+          const deny = rule.effect === 'EFFECT_DENY' && this.evaluateAction({ action: rule.actions[0], ...rule }, context);
+          if (allow) decision = 'ALLOW';
+          if (deny) decision = 'DENY';
+        }
+      });
+    });
+
+    return decision;
+  }
+
+  public async evaluate(requestParams: RequestParams): Promise<string> {
+    const context = await this.buildContext(requestParams);
+    const { principalPolicies, resourcePolicies } = await this.getRelevantPolicies(requestParams.principalId, requestParams.resourceId);
+    
+    if (principalPolicies.length === 0 && resourcePolicies.length === 0) {
+      return 'DENY'; // No matching policies, deny by default
+    }
+
+    // Resolve Resource Policy Conflicts
+    const resourceDecision = this.resolveResourcePolicyConflicts(resourcePolicies, context);
+
+    // Further implementation could handle principalPolicies if needed
+
+    return resourceDecision;
+  }
+}
+
+// Example usage
+async function runQuery(requestParams: RequestParams) {
+  await mongoose.connect('mongodb://localhost:27017/agsiri-iam', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  const evaluator = new PolicyEvaluator();
+  const decision = await evaluator.evaluate(requestParams);
+
+  console.log('Decision:', decision);
+
+  mongoose.connection.close();
+}
+
+// Example request parameters
+const requestParams0: RequestParams = {
+  principalId: 'administrator',
+  resourceId: 'ari:agsiri:dataroom:us:123456789012:dataroom/cabinet456/files/file002',
+  actions: ['edit', 'delete'],
+};
+const requestParams: RequestParams = {
+  principalId: 'admin',
+  resourceId: 'ari:agsiri:dataroom:us:123456789012:dataroom/cabinet001/files/file001',
+  actions: ['edit', 'delete'],
+};
+
+
+// Run the query
+runQuery(requestParams).catch(console.error);
+

@@ -1,0 +1,47 @@
+{
+  "name": "metadata",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines metadata such as annotations, source attributes, and hash information for the policy.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Metadata Management",
+  "context": "Metadata used in policy management.",
+  "story": "Metadata schema for tracking annotations and source details.",
+  "definition": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "annotations": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "hash": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "string",
+              "pattern": "^(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+            }
+          ]
+        },
+        "sourceAttributes": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/sourceAttributes/2.6"
+        },
+        "sourceFile": {
+          "type": "string"
+        },
+        "storeIdentifier": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

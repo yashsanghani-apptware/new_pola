@@ -1,0 +1,102 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/policy/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "policy",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The Policy schema defines a comprehensive structure for managing policies, including principal and resource policies, role and event policies, and other policy-related data.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["apiVersion"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "apiVersion": {
+      "type": "string",
+      "const": "api.pola.dev/v2.8"
+    },
+    "derivedRoles": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/derivedRoles/2.8"
+    },
+    "description": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[\\-\\.0-9A-Z_a_z]+$"
+    },
+    "disabled": {
+      "type": "boolean"
+    },
+    "exportVariables": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/exportVariables/2.8"
+    },
+    "metadata": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/metadata/2.8"
+    },
+    "principalPolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/principalPolicy/2.8"
+    },
+    "resourcePolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/resourcePolicy/2.8"
+    },
+    "rolePolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/rolePolicy/2.8"
+    },
+    "groupPolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/groupPolicy/2.8"
+    },
+    "eventPolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/eventPolicy/2.8"
+    },
+    "serviceControlPolicy": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/serviceControlPolicy/2.8"
+    },
+    "auditInfo": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/auditInfo/2.8"
+    },
+    "variables": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["resourcePolicy"]
+    },
+    {
+      "type": "object",
+      "required": ["principalPolicy"]
+    },
+    {
+      "type": "object",
+      "required": ["rolePolicy"]
+    },
+    {
+      "type": "object",
+      "required": ["groupPolicy"]
+    },
+    {
+      "type": "object",
+      "required": ["eventPolicy"]
+    },
+    {
+      "type": "object",
+      "required": ["derivedRoles"]
+    },
+    {
+      "type": "object",
+      "required": ["exportVariables"]
+    },
+    {
+      "type": "object",
+      "required": ["serviceControlPolicy"]
+    }
+  ]
+}
+

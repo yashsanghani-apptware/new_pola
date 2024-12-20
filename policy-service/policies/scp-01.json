@@ -1,0 +1,38 @@
+{
+  "apiVersion": "api.pola.dev/v2.5",
+  "name": "role-based-access-with-conditions",
+  "description": "Role and group-based policy with nested conditions for advanced access control.",
+  "auditInfo": {
+    "createdBy": "roleAdmin",
+    "createdAt": "2024-08-28T18:00:00Z",
+    "updatedBy": "roleAdmin",
+    "updatedAt": "2024-08-28T18:00:00Z"
+  },
+  "rolePolicy": {
+    "role": "role-finance-manager",
+    "version": "1.0.0",
+    "rules": [
+      {
+        "resource": "finance-report",
+        "actions": [
+          {
+            "action": "approve",
+            "effect": "EFFECT_ALLOW",
+            "condition": {
+              "match": {
+                "all": {
+                  "of": [
+                    { "expr": "P.role == 'finance-manager'" },
+                    { "expr": "R.reportStatus == 'pending'" }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  
+}
+

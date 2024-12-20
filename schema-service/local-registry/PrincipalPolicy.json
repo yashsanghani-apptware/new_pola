@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/principalPolicy/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "principalPolicy",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The PrincipalPolicy schema defines policies that are directly associated with a principal, such as a user or group, and contains rules for resource access.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["principal", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "principal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "http://registry.agsiri.com:8080/v1/schemas/principalRule/2.8"
+      }
+    },
+    "scope": {
+      "type": "string",
+      "pattern": "^([0-9A-Za-z][\\-0-9A-Z_a-z]*(\\.[\\-0-9A-Z_a_z]*)*)*$"
+    },
+    "variables": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/variables/2.8"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)*$"
+    }
+  }
+}
+

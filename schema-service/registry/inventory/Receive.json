@@ -1,0 +1,21 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/receive/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "receive",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a receive activity in a Satori process, which waits for a message from a service.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["receive"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "service": { "type": "string" },
+    "operation": { "type": "string" },
+    "variable": { "type": "string" },
+    "createInstance": { "type": "boolean" }
+  },
+  "required": ["type", "id", "service", "operation", "variable"]
+}
+

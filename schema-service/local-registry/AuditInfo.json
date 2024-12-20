@@ -1,0 +1,29 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/auditInfo/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "auditInfo",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The AuditInfo schema defines audit-related information such as the user who created or updated a resource, and the associated timestamps.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["createdBy"],
+  "additionalProperties": false,
+  "properties": {
+    "createdBy": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedBy": {
+      "type": "string"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
+

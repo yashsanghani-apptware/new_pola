@@ -1,0 +1,123 @@
+import mongoose from 'mongoose';
+import { buildContext } from './ContextBuilderService';
+import { evaluateConditionExpression } from './ContextBuilderService';
+import { customOperators } from './customOperators';
+import { IScenario, Scenario } from '../models/Scenario';
+import { PolicyService } from '../services/PolicyService'; 
+
+export class PolicySimulator {
+  private dbConnectionString: string;
+
+  constructor(dbConnectionString: string) {
+    this.dbConnectionString = dbConnectionString;
+  }
+
+  /**
+   * Connects to the MongoDB database using the provided connection string.
+   */
+  async connect(): Promise<void> {
+    try {
+      await mongoose.connect(this.dbConnectionString);
+      console.log('Connected to MongoDB');
+    } catch (error) {
+      console.error('Error connecting to MongoDB:', error);
+      throw error; // Re-throw to allow handling in the caller
+    }
+  }
+
+  /**
+   * Disconnects from the MongoDB database.
+   */
+  async disconnect(): Promise<void> {
+    try {
+      await mongoose.connection.close();
+      console.log('Disconnected from MongoDB');
+    } catch (error) {
+      console.error('Error disconnecting from MongoDB:', error);
+    }
+  }
+
+  /**
+   * Simulates policy evaluation based on a given scenario.
+   * @param scenarioId The ID of the scenario to run.
+   * @param identifiers Identifiers such as userId and resourceId.
+   * @param localVariables Local variables relevant to the context.
+   * @param globals Global variables that might affect evaluation.
+   */
+  async simulatePolicy(
+    scenarioId: string,
+    identifiers: { userId: string; resourceId: string },
+    localVariables: { [key: string]: any },
+    globals: { [key: string]: any }
+  ): Promise<void> {
+    try {
+      // Fetch the scenario from the database
+      const scenario: IScenario | null = await Scenario.findById(scenarioId);
+
+      if (!scenario) {
+        console.error('Scenario not found for ID:', scenarioId);
+        return;
+      }
+
+      // Build the execution context using the ContextBuilder
+      const context = await buildContext(identifiers, localVariables, globals);
+
+      // Add custom operators to the context runtime
+      Object.assign(context.runtime, customOperators);
+
+      // Fetch relevant policies from the PolicyService
+      const policies = await PolicyService.getAllPolicies(); // Or any specific method to get policies
+      let policyPassed = false;
+
+      // Evaluate each policy against the scenario
+      for (const policy of policies) {
+        // Assuming evaluateConditionExpression is used for the core evaluation logic
+        const result = evaluateConditionExpression(policy.expression, context.runtime);
+
+        // Compare the result with the expected outcome from the scenario
+        policyPassed = result === scenario.expected;
+
+        // Log the result
+        console.log({
+          policyId: policy._id,
+          expression: policy.expression,
+          expected: scenario.expected,
+          actualResult: result,
+          passed: policyPassed,
+        });
+
+        // Stop evaluating further if the policy passes
+        if (policyPassed) break;
+      }
+
+      // Final log if no policy passed
+      if (!policyPassed) {
+        console.log(`Scenario ${scenarioId} did not pass any policy checks.`);
+      }
+    } catch (error) {
+      console.error('Error simulating policy:', error);
+    }
+  }
+}
+
+// Example usage:
+
+async function runPolicySimulatorExample() {
+  const simulator = new PolicySimulator('mongodb://localhost:27017/agsiri-iam');
+
+  try {
+    await simulator.connect();
+
+    await simulator.simulatePolicy(
+      'scenarioId123', // Replace with an actual scenario ID
+      { userId: 'user123', resourceId: 'resource456' },
+      { customVar1: 'value1' },
+      { globalVar1: 'globalValue' }
+    );
+  } finally {
+    await simulator.disconnect();
+  }
+}
+
+runPolicySimulatorExample();
+

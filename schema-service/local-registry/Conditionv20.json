@@ -1,0 +1,17 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/condition/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "condition",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents the condition logic in the Satori process, used to evaluate rules or expressions to control flow.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "match": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/match/2.20"
+    }
+  },
+  "required": ["match"]
+}
+

@@ -1,0 +1,30 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "name": "Review$Approval",
+  "description": "Allow actions if the resource is pending approval and located in GB.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": ["view", "edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {"expr": "R.attr.status == 'PENDING_APPROVAL'"},
+                {"expr": "'GB' in R.attr.geographies"}
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T12:00:00Z"
+  }
+}
+

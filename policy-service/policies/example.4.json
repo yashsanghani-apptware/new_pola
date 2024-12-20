@@ -1,0 +1,15 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Export variable for checking if the principal is in a dev environment.",
+  "exportVariables": {
+    "name": "dev_environment",
+    "definitions": {
+      "is_dev_user": "P.id.matches('^dev_.*')"
+    }
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T12:30:00Z"
+  }
+}
+

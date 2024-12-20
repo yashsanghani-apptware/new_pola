@@ -1,0 +1,23 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/sequence/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "sequence",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a sequence of activities in a Satori process, where activities are executed one after another.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["sequence"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "activities": {
+      "type": "array",
+      "items": {
+        "$ref": "http://registry.agsiri.com/v1/schemas/activity/2.20"
+      }
+    }
+  },
+  "required": ["type", "id", "activities"]
+}
+

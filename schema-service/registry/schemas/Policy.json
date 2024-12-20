@@ -1,0 +1,122 @@
+{
+  "name": "policy",
+  "version": "2.7",
+  "author": "Surendra Reddy",
+  "description": "The Policy schema defines rules and conditions for managing resources, principals, roles, and events.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Policy Management",
+  "context": "Used to define and enforce policies in the system.",
+  "story": "This schema provides the structure for defining policies related to resources, roles, principals, and events.",
+  "definition": {
+    "$id": "http://registry.agsiri.com/v1/schemas/policy/2.6",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Policy Schema",
+    "description": "The Policy schema defines rules and conditions for managing resources, principals, roles, and events.",
+    "type": "object",
+    "required": [
+      "apiVersion"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "apiVersion": {
+        "type": "string",
+        "const": "api.pola.dev/v2.6"
+      },
+      "derivedRoles": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/derivedRoles/2.6"
+      },
+      "description": {
+        "type": "string"
+      },
+      "name": {
+        "type": "string",
+        "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+      },
+      "disabled": {
+        "type": "boolean"
+      },
+      "exportVariables": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/exportVariables/2.6"
+      },
+      "metadata": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/metadata/2.6"
+      },
+      "principalPolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/principalPolicy/2.6"
+      },
+      "resourcePolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/resourcePolicy/2.6"
+      },
+      "rolePolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/rolePolicy/2.6"
+      },
+      "groupPolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/groupPolicy/2.6"
+      },
+      "eventPolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/eventPolicy/2.6"
+      },
+      "serviceControlPolicy": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/serviceControlPolicy/2.6"
+      },
+      "auditInfo": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/auditInfo/2.6"
+      },
+      "variables": {
+        "$ref": "http://registry.agsiri.com:8080/v1/definitions/variables/2.6"
+      }
+    },
+    "oneOf": [
+      {
+        "type": "object",
+        "required": [
+          "resourcePolicy"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "principalPolicy"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "rolePolicy"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "groupPolicy"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "eventPolicy"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "derivedRoles"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "exportVariables"
+        ]
+      },
+      {
+        "type": "object",
+        "required": [
+          "serviceControlPolicy"
+        ]
+      }
+    ]
+  }
+}
+

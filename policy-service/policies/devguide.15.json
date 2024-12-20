@@ -1,0 +1,14 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Export the greatest value of a list.",
+  "exportVariables": {
+    "name": "max_value",
+    "definitions": {
+      "greatest_value": "math.greatest([1, 3, 5])"
+    }
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T14:20:00Z"
+  }
+}

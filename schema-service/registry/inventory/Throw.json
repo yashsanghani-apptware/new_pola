@@ -1,0 +1,19 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/throw/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "throw",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a throw activity in a Satori process, which throws a fault.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["throw"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "faultName": { "type": "string" },
+    "faultVariable": { "type": "string" }
+  },
+  "required": ["type", "id", "faultName"]
+}
+

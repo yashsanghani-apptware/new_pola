@@ -1,0 +1,56 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/serviceControlPolicy/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "serviceControlPolicy",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The ServiceControlPolicy schema defines the maximum permissions and bound entities for managing service control across users, groups, roles, and resources.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["maxPermissions", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "maxPermissions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "boundEntities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)*$"
+    }
+  }
+}
+

@@ -1,0 +1,43 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Allow edits if the resource is a draft, dev, or matches specific patterns.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/*",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": ["edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {"expr": "R.attr.status == 'DRAFT'"},
+                {
+                  "any": {
+                    "of": [
+                      {"expr": "R.attr.dev == true"},
+                      {"expr": "R.attr.id.matches('^[98][0-9]+')"}
+                    ]
+                  }
+                },
+                {
+                  "none": {
+                    "of": [
+                      {"expr": "R.attr.qa == true"},
+                      {"expr": "R.attr.canary == true"}
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T13:10:00Z"
+  }
+}

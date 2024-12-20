@@ -1,0 +1,25 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/audit/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "audit",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents audit information for a process, including creation and update metadata.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "createdBy": { "type": "string" },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedBy": { "type": "string" },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": ["id", "createdBy", "createdAt"]
+}
+

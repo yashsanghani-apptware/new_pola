@@ -1,0 +1,35 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/output/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "output",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents output in a Satori process, allowing for expressions and transformations to compute the output value.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "expr": {
+      "type": "string",
+      "description": "Expression to compute the output value."
+    },
+    "when": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/outputWhen/2.20"
+    },
+    "transformations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "operation": { "type": "string" },
+          "parameters": { "type": "object" }
+        },
+        "required": ["operation"]
+      }
+    },
+    "chainedOutputs": {
+      "type": "array",
+      "items": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/output/2.20" }
+    }
+  }
+}
+

@@ -1,0 +1,34 @@
+{
+  "name": "exportVariables",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines variables that can be exported for use within a policy or rule.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Variable Management",
+  "context": "Handles the export of variables in policies.",
+  "story": "This definition helps define and manage variables that can be exported from policies.",
+  "definition": {
+    "exportVariables": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "definitions": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[\\-\\.0-9A-Z_a-z]+$"
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,24 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/outputWhen/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "outputWhen",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines conditions under which an output is triggered in a Satori process.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "conditionNotMet": {
+      "type": "string",
+      "description": "Expression to trigger output when the condition is not met."
+    },
+    "ruleActivated": {
+      "type": "string",
+      "description": "Expression to trigger output when a specific rule is activated."
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/condition/2.20"
+    }
+  }
+}
+

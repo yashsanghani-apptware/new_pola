@@ -1,0 +1,28 @@
+{
+  "apiVersion": "api.pola.dev/v1",
+  "groupPolicy": {
+    "group": "group001",
+    "version": "1.0",
+    "rules": [
+      {
+        "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+        "actions": [
+          {
+            "action": "download",
+            "effect": "EFFECT_ALLOW",
+            "condition": {
+              "match": {
+                "expr": "'internal' in R.tags"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-22T10:20:00Z"
+  }
+}
+

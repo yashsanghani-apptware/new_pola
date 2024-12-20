@@ -1,0 +1,28 @@
+{
+  "apiVersion": "api.pola.dev/v2.5",
+  "description": "Check JWT claims to validate principal.",
+  "principalPolicy": {
+    "principal": "user",
+    "version": "1.0",
+    "rules": [
+      {
+        "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+        "actions": [
+          {
+            "action": "access",
+            "effect": "EFFECT_ALLOW",
+            "condition": {
+              "match": {
+                "expr": "'agsirian' in request.auxData.jwt.aud && request.auxData.jwt.iss == 'agsiri'"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T13:40:00Z"
+  }
+}

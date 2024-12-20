@@ -1,0 +1,37 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/metadata/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "metadata",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Metadata about the Satori process, including annotations, hash values, and source attributes.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "annotations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "hash": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 0
+        },
+        {
+          "type": "string",
+          "pattern": "^(?:0|[1-9]\\d*)(?:\\.\\d+)?(?:\\.\\d+)?(?:[eE][+-]?\\d+)?$"
+        }
+      ]
+    },
+    "sourceFile": {
+      "type": "string"
+    },
+    "storeIdentifier": {
+      "type": "string"
+    }
+  }
+}
+

@@ -1,0 +1,21 @@
+[
+    {
+        "principalId": "user123",
+        "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/farm001",
+        "actions": ["read"],
+        "environment": {},
+        "variables": {},
+        "expectedResult": "ALLOW",
+        "explanation": "Admin with more than 5 years of experience should be allowed to read."
+    },
+    {
+        "principalId": "user123",
+        "resourceId": "ari:agsiri:dataroom:us:123456789012:dataroom/farm001",
+        "actions": ["edit"],
+        "environment": {},
+        "variables": {},
+        "expectedResult": "DENY",
+        "explanation": "Non-admin should not be allowed to edit."
+    }
+]
+

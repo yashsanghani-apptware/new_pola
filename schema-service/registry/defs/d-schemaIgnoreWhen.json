@@ -1,0 +1,30 @@
+{
+  "name": "schemasIgnoreWhen",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines conditions for ignoring actions during schema validation or processing.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Schema Management",
+  "context": "Used to ignore specific actions during schema validation.",
+  "story": "The schemasIgnoreWhen definition allows specifying actions that should be ignored during schema processing.",
+  "definition": {
+    "schemasIgnoreWhen": {
+      "type": "object",
+      "required": ["actions"],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
+

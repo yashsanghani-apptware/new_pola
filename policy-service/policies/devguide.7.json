@@ -1,0 +1,27 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Assign 'RestrictedAccess' role if resource is neither in QA nor in Canary.",
+  "derivedRoles": {
+    "name": "RestrictedAccess",
+    "definitions": [
+      {
+        "name": "No_QA_Canary",
+        "parentRoles": ["viewer"],
+        "condition": {
+          "match": {
+            "none": {
+              "of": [
+                {"expr": "R.attr.qa == true"},
+                {"expr": "R.attr.canary == true"}
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T13:00:00Z"
+  }
+}

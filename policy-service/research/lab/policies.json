@@ -1,0 +1,135 @@
+[
+  {
+    "apiVersion": "api.agsiri.dev/v1",
+    "resourcePolicy": {
+      "resource": "ari:agsiri:dataroom:*",
+      "version": "1.0",
+      "rules": [
+        {
+          "actions": ["read", "edit", "delete"],
+          "effect": "EFFECT_ALLOW",
+          "condition": {
+            "match": {
+              "all": {
+                "of": [
+                  {
+                    "expr": "userRole === 'admin'"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "principalPolicy": {
+      "principal": "adminUser",
+      "version": "1.0",
+      "rules": [
+        {
+          "resource": "ari:agsiri:dataroom:*",
+          "actions": [
+            {
+              "action": "edit",
+              "effect": "EFFECT_ALLOW"
+            }
+          ]
+        }
+      ]
+    },
+    "auditInfo": {
+      "createdBy": "systemAdmin",
+      "createdAt": "2024-08-21T00:00:00Z"
+    }
+  },
+  {
+    "apiVersion": "api.agsiri.dev/v1",
+    "resourcePolicy": {
+      "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/projectAlpha",
+      "version": "1.0",
+      "rules": [
+        {
+          "actions": ["read", "edit"],
+          "effect": "EFFECT_ALLOW",
+          "condition": {
+            "match": {
+              "all": {
+                "of": [
+                  {
+                    "expr": "userRole === 'manager'"
+                  },
+                  {
+                    "expr": "project === 'Alpha'"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "principalPolicy": {
+      "principal": "managerUser",
+      "version": "1.0",
+      "rules": [
+        {
+          "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/projectAlpha",
+          "actions": [
+            {
+              "action": "read",
+              "effect": "EFFECT_ALLOW"
+            }
+          ]
+        }
+      ]
+    },
+    "auditInfo": {
+      "createdBy": "systemAdmin",
+      "createdAt": "2024-08-21T00:00:00Z"
+    }
+  },
+  {
+    "apiVersion": "api.agsiri.dev/v1",
+    "resourcePolicy": {
+      "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/sensitiveFiles/*",
+      "version": "1.0",
+      "rules": [
+        {
+          "actions": ["read"],
+          "effect": "EFFECT_DENY",
+          "condition": {
+            "match": {
+              "all": {
+                "of": [
+                  {
+                    "expr": "fileClassification === 'sensitive'"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "principalPolicy": {
+      "principal": "regularUser",
+      "version": "1.0",
+      "rules": [
+        {
+          "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/sensitiveFiles/*",
+          "actions": [
+            {
+              "action": "read",
+              "effect": "EFFECT_DENY"
+            }
+          ]
+        }
+      ]
+    },
+    "auditInfo": {
+      "createdBy": "systemAdmin",
+      "createdAt": "2024-08-21T00:00:00Z"
+    }
+  }
+]
+

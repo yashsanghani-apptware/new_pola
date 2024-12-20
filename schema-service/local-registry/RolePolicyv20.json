@@ -1,0 +1,30 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/rolePolicy/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "rolePolicy",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines a role policy within a Satori process, specifying permissions granted to a role for resources.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "role": { "type": "string" },
+    "permissions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "resource": { "type": "string" },
+          "actions": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["resource", "actions"]
+      }
+    }
+  },
+  "required": ["id", "role", "permissions"]
+}
+

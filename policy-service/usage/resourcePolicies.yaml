@@ -1,0 +1,381 @@
+apiVersion: "api.pola.dev/v1"
+name: "ComplexResourcePolicies"
+resourcePolicies:
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/data-room"
+      version: "1.0.0"
+      rules:
+        - actions: ["READ", "LIST"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "R.status === 'active'"
+                  - expr: "P.role === 'analyst'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "P.suspension === true"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "data-room-access-attempts"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/data-room"
+      version: "1.0.0"
+      rules:
+        - actions: ["DELETE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              any:
+                of:
+                  - expr: "P.role !== 'admin'"
+                  - expr: "R.sensitivityLevel >= 5"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://audit.example.com/log"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/vault"
+      version: "1.0.1"
+      rules:
+        - actions: ["UPLOAD", "DOWNLOAD"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "R.encryption === true"
+                  - expr: "P.clearanceLevel >= 4"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "vault-activity"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/vault"
+      version: "1.0.1"
+      rules:
+        - actions: ["DELETE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              any:
+                of:
+                  - expr: "R.encryption === false"
+                  - expr: "P.role !== 'security_officer'"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://security.example.com/alert"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/financial-reports"
+      version: "2.0.0"
+      rules:
+        - actions: ["VIEW", "EXPORT"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'finance_manager'"
+                  - expr: "R.quarter === 'Q1'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "P.region !== R.region"
+                          - expr: "R.confidential === true"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "finance-report-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/financial-reports"
+      version: "2.0.0"
+      rules:
+        - actions: ["DELETE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              any:
+                of:
+                  - expr: "P.role !== 'finance_manager'"
+                  - expr: "R.auditPending === true"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://audit.example.com/incident"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/marketing-data"
+      version: "1.5.0"
+      rules:
+        - actions: ["ANALYZE", "EXPORT"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'data_scientist'"
+                  - expr: "R.dataType === 'customer_insights'"
+                  - match:
+                      any:
+                        of:
+                          - expr: "R.shared === true"
+                          - expr: "P.region === R.region"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "marketing-data-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/legal-documents"
+      version: "3.0.0"
+      rules:
+        - actions: ["ACCESS", "REVIEW"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'legal_analyst'"
+                  - expr: "R.status === 'open'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "R.confidential === true"
+                          - expr: "P.clearanceLevel < 3"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "legal-docs-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/sales-data"
+      version: "4.0.0"
+      rules:
+        - actions: ["VIEW", "ANALYZE"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'sales_analyst'"
+                  - expr: "R.region === P.region"
+                  - match:
+                      any:
+                        of:
+                          - expr: "R.fiscalYear === '2024'"
+                          - expr: "R.isForecast === true"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "sales-data-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/hr-records"
+      version: "1.2.0"
+      rules:
+        - actions: ["VIEW", "UPDATE"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'hr_manager'"
+                  - expr: "R.department === 'HR'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "R.sensitive === true"
+                          - expr: "P.clearanceLevel < 5"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "hr-records-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/hr-records"
+      version: "1.2.0"
+      rules:
+        - actions: ["DELETE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              any:
+                of:
+                  - expr: "P.role !== 'hr_manager'"
+                  - expr: "R.isUnderReview === true"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://hr-audit.example.com/incident"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/product-blueprints"
+      version: "2.1.0"
+      rules:
+        - actions: ["ACCESS", "DISTRIBUTE"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'engineer'"
+                  - expr: "R.status === 'approved'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "R.sensitive === true"
+                          - expr: "P.clearanceLevel < 4"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "blueprints-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/it-infrastructure"
+      version: "3.0.0"
+      rules:
+        - actions: ["MODIFY", "DELETE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              any:
+                of:
+                  - expr: "P.role !== 'it_admin'"
+                  - expr: "R.critical === true"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://it-security.example.com/alert"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/confidential-data"
+      version: "1.0.0"
+      rules:
+        - actions: ["VIEW", "SHARE"]
+          effect: "EFFECT_DENY"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role !== 'executive'"
+                  - expr: "R.classification === 'top_secret'"
+          notify:
+            service: "webservice"
+            serviceConfig:
+              url: "https://confidentiality-breach.example.com/alert"
+              method: "POST"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/strategic-plans"
+      version: "2.5.0"
+      rules:
+        - actions: ["ACCESS", "MODIFY"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'strategist'"
+                  - expr: "R.year === '2025'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "R.confidential === true"
+                          - expr: "P.clearanceLevel < 4"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "strategic-plans-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/operations-reports"
+      version: "1.3.0"
+      rules:
+        - actions: ["VIEW", "EXPORT"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'operations_manager'"
+                  - expr: "R.quarter === 'Q3'"
+                  - match:
+                      any:
+                        of:
+                          - expr: "R.isForecast === false"
+                          - expr: "P.region === R.region"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "operations-reports-access"
+            when:
+              conditionMet: "true"
+
+  - resourcePolicy:
+      resource: "ari:service:region:account-id:resource/security-logs"
+      version: "1.0.0"
+      rules:
+        - actions: ["VIEW", "EXPORT"]
+          effect: "EFFECT_ALLOW"
+          condition:
+            match:
+              all:
+                of:
+                  - expr: "P.role === 'security_officer'"
+                  - expr: "R.date >= '2024-01-01'"
+                  - match:
+                      none:
+                        of:
+                          - expr: "R.sensitivityLevel < 2"
+                          - expr: "P.clearanceLevel < 4"
+          notify:
+            service: "pubsub"
+            serviceConfig:
+              topic: "security-logs-access"
+            when:
+              conditionMet: "true"
+

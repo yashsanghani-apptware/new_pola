@@ -1,0 +1,27 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/wait/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "wait",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a wait activity in a Satori process, which delays further execution until a condition is met.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["wait"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "for": {
+      "type": "string",
+      "format": "duration",
+      "description": "Duration in ISO 8601 format."
+    },
+    "until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date-time in ISO 8601 format."
+    }
+  },
+  "required": ["type", "id"]
+}
+

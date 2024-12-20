@@ -1,0 +1,26 @@
+{
+  "name": "outputWhen",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines conditions that trigger output expressions in policy rules.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Output Logic",
+  "context": "Used to specify when outputs should be triggered in policy rules.",
+  "story": "This definition captures the conditions under which outputs are generated in rules.",
+  "definition": {
+    "outputWhen": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conditionNotMet": {
+          "type": "string"
+        },
+        "ruleActivated": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
+

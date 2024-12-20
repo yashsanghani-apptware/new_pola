@@ -1,0 +1,28 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Use variables to define project membership.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:project/*",
+    "version": "1.0",
+    "variables": {
+      "local": {
+        "is_project_member": "P.attr.project_id == 'alpha'"
+      }
+    },
+    "rules": [
+      {
+        "actions": ["view", "edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "expr": "V.is_project_member"
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T13:30:00Z"
+  }
+}

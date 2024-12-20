@@ -1,0 +1,22 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/schemasSchema/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "schemasSchema",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents individual schema definitions within the Satori process, providing references and conditions for usage.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["ref"],
+  "additionalProperties": false,
+  "properties": {
+    "ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ignoreWhen": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/schemasIgnoreWhen/2.20"
+    }
+  }
+}
+

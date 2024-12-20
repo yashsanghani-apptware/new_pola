@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/eventRuleAction/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "eventRuleAction",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The EventRuleAction schema defines the specific actions and effects for events, including conditions, notifications, and outputs.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["action", "effect"],
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["NOTIFY", "LOG", "ALERT", "APPROVE", "REVIEW"]
+    },
+    "effect": {
+      "type": "string",
+      "enum": ["EFFECT_ALLOW", "EFFECT_DENY"]
+    },
+    "condition": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/condition/2.8"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a-z]*)*$"
+    },
+    "notify": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/notify/2.8"
+    },
+    "output": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/output/2.8"
+    }
+  }
+}
+

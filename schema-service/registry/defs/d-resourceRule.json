@@ -1,0 +1,69 @@
+{
+  "name": "resourceRule",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines actions, conditions, and roles for managing resources with effects like allow or deny.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Resource Management",
+  "context": "Defines rules that govern how resources are managed within policies.",
+  "story": "This definition helps define specific actions and conditions applied to resource management.",
+  "definition": {
+    "resourceRule": {
+      "type": "object",
+      "required": [
+        "actions",
+        "effect"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "condition": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/condition/2.6"
+        },
+        "derivedRoles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[\\-\\.0-9A-Z_a_z]+$"
+          },
+          "uniqueItems": true
+        },
+        "effect": {
+          "type": "string",
+          "enum": [
+            "EFFECT_ALLOW",
+            "EFFECT_DENY"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^([A-Za-z][\\-\\.0-9@-Z_a-z]*)*$"
+        },
+        "output": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/output/2.6"
+        },
+        "notify": {
+          "$ref": "http://registry.agsiri.com:8080/v1/definitions/notify/2.6"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}
+

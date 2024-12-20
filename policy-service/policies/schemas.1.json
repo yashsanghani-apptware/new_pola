@@ -1,0 +1,41 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "resourcePolicy": {
+    "version": "1.0",
+    "resource": "album:object",
+    "importDerivedRoles": ["apatr_common_roles"],
+    "schemas": {
+      "principalSchema": {
+        "ref": "agsiri:///principal.json"
+      },
+      "resourceSchema": {
+        "ref": "agsiri:///album/object.json",
+        "ignoreWhen": {
+          "actions": ["create", "delete:*"]
+        }
+      }
+    },
+    "rules": [
+      {
+        "actions": ["create"],
+        "effect": "EFFECT_ALLOW",
+        "derivedRoles": ["owner"]
+      },
+      {
+        "actions": ["view"],
+        "effect": "EFFECT_ALLOW",
+        "roles": ["user"],
+        "condition": {
+          "match": {
+            "expr": "request.resource.attr.public == true"
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:34:56Z"
+  }
+}
+

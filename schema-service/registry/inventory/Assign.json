@@ -1,0 +1,36 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/assign/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "assign",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents an assign activity in a Satori process, which copies data from one variable to another.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["assign"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "copy": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Source expression in JSONPath.",
+            "pattern": "^\\$.*"
+          },
+          "to": {
+            "type": "string",
+            "description": "Destination expression in JSONPath.",
+            "pattern": "^\\$.*"
+          }
+        },
+        "required": ["from", "to"]
+      }
+    }
+  },
+  "required": ["type", "id", "copy"]
+}
+

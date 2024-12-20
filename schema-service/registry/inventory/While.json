@@ -1,0 +1,23 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/while/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "while",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a 'while' loop activity in a Satori process, repeating execution until a condition is false.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["while"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "condition": {
+      "type": "string",
+      "description": "A condition in JSONPath language.",
+      "pattern": "^\\$.*"
+    },
+    "activity": { "$ref": "http://registry.agsiri.com/v1/schemas/activity/2.20" }
+  },
+  "required": ["type", "id", "condition", "activity"]
+}
+

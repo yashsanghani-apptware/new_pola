@@ -1,0 +1,24 @@
+{
+  "name": "sourceAttributes",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines source attributes for tracking metadata about source files.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Metadata Management",
+  "context": "Used in the metadata to track source attributes in policy files.",
+  "story": "SourceAttributes schema provides fields to track source information in policies.",
+  "definition": {
+    "sourceAttributes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "attributes": {
+          "type": "object",
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,79 @@
+{
+"apiVersion": "api.pola.dev/v2.5",
+  "resourcePolicy": {
+    "resource": "ari:service:region:account:resource-id",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": [
+          "publish",
+          "view",
+          "report",
+          "edit",
+          "create"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "user.role == 'Admin'"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "actions": [
+          "subscribe",
+          "review"
+        ],
+        "effect": "EFFECT_ALLOW"
+      },
+      {
+        "actions": [
+          "edit",
+          "create"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "user.role == 'Investor'"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "actions": [
+          "edit",
+          "create"
+        ],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {
+                  "expr": "user.role == 'Realtor'"
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-30T00:53:54.402Z",
+    "updatedAt": "2024-08-30T02:12:50.978Z",
+    "updatedBy": "admin"
+  }
+}

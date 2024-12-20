@@ -1,0 +1,29 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/process/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "process",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines the structure of a Satori process, including services, variables, activities, and handlers.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "documentationUrl": { "type": "string", "format": "uri" },
+    "targetNamespace": { "type": "string" },
+    "services": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/services/2.20" },
+    "variables": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/variables/2.20" },
+    "activities": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/activities/2.20" },
+    "faultHandlers": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/faultHandlers/2.20" },
+    "eventHandlers": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/eventHandlers/2.20" },
+    "policyBindings": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/policyBindings/2.20" },
+    "audit": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/audit/2.20" },
+    "metadata": { "$ref": "http://registry.agsiri.com:8080/v1/schemas/metadata/2.20" }
+  },
+  "required": ["id", "name", "version", "activities"]
+}
+

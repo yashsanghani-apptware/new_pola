@@ -1,0 +1,33 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/match/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "match",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a match condition in the Satori process, including all, any, and none matching criteria, and expressions.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "all": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/matchExprList/2.20"
+    },
+    "any": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/matchExprList/2.20"
+    },
+    "expr": {
+      "type": "string",
+      "description": "An expression written in JSONPath format.",
+      "pattern": "^\\$.*"
+    },
+    "none": {
+      "$ref": "http://registry.agsiri.com:8080/v1/schemas/matchExprList/2.20"
+    }
+  },
+  "oneOf": [
+    { "required": ["all"] },
+    { "required": ["any"] },
+    { "required": ["none"] },
+    { "required": ["expr"] }
+  ]
+}
+

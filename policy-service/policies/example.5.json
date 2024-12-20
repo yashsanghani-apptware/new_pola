@@ -1,0 +1,30 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Allow actions if resource is pending approval and both resource and principal are in GB.",
+  "resourcePolicy": {
+    "resource": "ari:agsiri:dataroom:us:123456789012:resource/*",
+    "version": "1.0",
+    "rules": [
+      {
+        "actions": ["view", "edit"],
+        "effect": "EFFECT_ALLOW",
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {"expr": "R.attr.status == 'PENDING_APPROVAL'"},
+                {"expr": "'GB' in R.attr.geographies"},
+                {"expr": "P.attr.geography == 'GB'"}
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "admin",
+    "createdAt": "2024-08-19T12:40:00Z"
+  }
+}
+

@@ -1,0 +1,47 @@
+{
+  "apiVersion": "api.pola.dev/v2.5",
+  "name": "comprehensive-service-control",
+  "description": "Combines dynamic roles, exported variables, and service control for maximum security.",
+  "auditInfo": {
+    "createdBy": "securityAdmin",
+    "createdAt": "2024-08-28T19:00:00Z",
+    "updatedBy": "securityAdmin",
+    "updatedAt": "2024-08-28T19:00:00Z"
+  },
+  "derivedRoles": {
+    "name": "dynamic-access-roles",
+    "definitions": [
+      {
+        "name": "temp-admin",
+        "parentRoles": ["viewer"],
+        "condition": {
+          "match": {
+            "expr": "P.loginHours > 40"
+          }
+        }
+      }
+    ],
+    "variables": {
+      "import": ["commonRoles"],
+      "local": {
+        "defaultAccess": "read-only"
+      }
+    }
+  },
+  "exportVariables": {
+    "name": "exportedCommonVars",
+    "definitions": {
+      "commonRoles": "['viewer', 'editor']"
+    }
+  },
+  "serviceControlPolicy": {
+    "maxPermissions": ["read", "write"],
+    "boundEntities": {
+      "users": ["64db82f9fc13ae3bf70000a1", "64db82f9fc13ae3bf70000a2"],
+      "groups": ["64db82f9fc13ae3bf70000a3"],
+      "roles": ["64db82f9fc13ae3bf70000a4"]
+    },
+    "version": "1.0.0"
+  }
+}
+

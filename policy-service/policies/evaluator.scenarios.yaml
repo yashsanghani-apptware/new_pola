@@ -1,0 +1,333 @@
+- scenarioID: "1"
+  Description: "Complex grouping with all, any, and none"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "user.age > 25"
+          - expr: "user.experienceYears >= 5"
+          - none:
+              of:
+                - expr: "resource.accessLevel === 'public'"
+                - expr: "context.isHoliday && system.maintenanceMode"
+          - any:
+              of:
+                - expr: "context.weekDay === 'Friday'"
+                - expr: "system.uptime > 200"
+  Expected: false
+  Explanation: "All conditions must be true: the user is over 25, has at least 5 years of experience, the resource is not public, and it's either Friday or system uptime is high."
+
+- scenarioID: "2"
+  Description: "Complex ternary operation with nested conditions"
+  Condition:
+    match:
+      expr: "user.role === 'admin' ? (resource.accessLevel === 'confidential' && !context.isHoliday) : (user.permissions.includes('write') && context.timeOfDay === 'day')"
+  Expected: false
+  Explanation: "The ternary condition checks the user's role; since it's 'admin', it expects the resource to be confidential and not a holiday, but it is a holiday."
+
+- scenarioID: "3"
+  Description: "Nested logical and arithmetic operations with all"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(user.age + 10) > 35 && user.experienceYears > 3"
+          - expr: "resource.size / 2 < 300"
+          - expr: "!system.maintenanceMode && context.currentHour < 20"
+  Expected: false
+  Explanation: "The maintenance mode is active, so the last condition fails."
+
+- scenarioID: "4"
+  Description: "Any conditions with complex nesting"
+  Condition:
+    match:
+      any:
+        of:
+          - all:
+              of:
+                - expr: "user.location === 'onsite'"
+                - expr: "user.department === 'IT'"
+          - none:
+              of:
+                - expr: "resource.tags.includes('external')"
+                - expr: "context.event === 'deployment'"
+          - expr: "system.uptime > 300 || context.weekDay === 'Monday'"
+  Expected: true
+  Explanation: "The scenario passes due to the uptime and day of the week."
+
+- scenarioID: "5"
+  Description: "Complex arithmetic and logical grouping"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(resource.size * 2) + 100 > 1100"
+          - expr: "(user.experienceYears + user.age) > 30"
+          - expr: "context.timeOfDay === 'day' && system.loadAverage < 1.5"
+  Expected: false
+  Explanation: "The scenario fails because it's not daytime and the arithmetic condition doesn’t hold."
+
+- scenarioID: "6"
+  Description: "Nested any and none with arithmetic checks"
+  Condition:
+    match:
+      any:
+        of:
+          - none:
+              of:
+                - expr: "user.age < 20"
+                - expr: "user.permissions.includes('admin')"
+          - expr: "(system.uptime / 10) > 20 && resource.accessLevel === 'confidential'"
+  Expected: true
+  Explanation: "The scenario passes because the uptime divided by 10 is over 20, and the resource is confidential."
+
+- scenarioID: "7"
+  Description: "Multiple nested all and any with complex logic"
+  Condition:
+    match:
+      all:
+        of:
+          - any:
+              of:
+                - expr: "user.department === 'Finance'"
+                - expr: "context.weekDay === 'Friday'"
+          - all:
+              of:
+                - expr: "resource.owner === 'admin'"
+                - expr: "system.loadAverage < 2"
+  Expected: true
+  Explanation: "The scenario passes because the weekday is Friday, and all other conditions are satisfied."
+
+- scenarioID: "8"
+  Description: "Complex none with nested all and arithmetic"
+  Condition:
+    match:
+      none:
+        of:
+          - expr: "(user.age + user.experienceYears) < 40"
+          - all:
+              of:
+                - expr: "context.isHoliday"
+                - expr: "system.maintenanceMode"
+  Expected: false
+  Explanation: "The scenario fails because it's a holiday and maintenance mode is active."
+
+- scenarioID: "9"
+  Description: "Complex logical grouping with ternary operator"
+  Condition:
+    match:
+      expr: "(user.role === 'admin' ? (system.loadAverage < 1.5 && context.timeOfDay !== 'night') : (resource.accessLevel === 'public'))"
+  Expected: false
+  Explanation: "The ternary condition fails because the load average is above 1.5 and it's nighttime."
+
+- scenarioID: "10"
+  Description: "All conditions with nested any and logical operations"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "user.permissions.includes('write')"
+          - any:
+              of:
+                - expr: "resource.size > 1000"
+                - expr: "system.uptime > 100"
+          - expr: "!context.isHoliday"
+  Expected: false
+  Explanation: "The scenario fails because it’s a holiday."
+
+- scenarioID: "11"
+  Description: "Complex nested logical and arithmetic conditions"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(resource.size * 2) > 1000 && user.location === 'remote'"
+          - expr: "context.weekDay !== 'Sunday'"
+          - none:
+              of:
+                - expr: "user.permissions.includes('delete')"
+                - expr: "system.maintenanceMode"
+  Expected: false
+  Explanation: "The scenario fails due to maintenance mode being active."
+
+- scenarioID: "12"
+  Description: "Nested any with complex arithmetic and logical checks"
+  Condition:
+    match:
+      any:
+        of:
+          - expr: "(system.uptime / 10) < 30"
+          - expr: "context.currentHour > 22 && resource.type === 'image'"
+  Expected: true
+  Explanation: "The scenario passes because it’s late at night and the resource is an image."
+
+- scenarioID: "13"
+  Description: "All conditions with complex nested grouping"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "user.role === 'admin'"
+          - expr: "resource.tags.includes('internal')"
+          - none:
+              of:
+                - expr: "context.event === 'incident'"
+                - expr: "system.loadAverage > 2"
+  Expected: true
+  Explanation: "The scenario passes because the user is an admin, the resource is internal, and the load average is under 2."
+
+- scenarioID: "14"
+  Description: "Complex ternary and nested conditions with any"
+  Condition:
+    match:
+      any:
+        of:
+          - expr: "user.role === 'manager' ? system.uptime < 100 : context.timeOfDay === 'night'"
+          - expr: "resource.owner === 'user123'"
+  Expected: true
+  Explanation: "The scenario passes because the resource owner is 'user123'."
+
+- scenarioID: "15"
+  Description: "Complex none with multiple nested conditions"
+  Condition:
+    match:
+      none:
+        of:
+          - expr: "user.location === 'onsite'"
+          - expr: "resource.accessLevel === 'public'"
+          - all:
+              of:
+                - expr: "context.timeOfDay === 'day'"
+                - expr: "context.event !== 'maintenance'"
+  Expected: true
+  Explanation: "The scenario passes because none of the conditions are true."
+
+- scenarioID: "16"
+  Description: "Nested all and any with complex arithmetic"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(resource.size / 2) > 200"
+          - any:
+              of:
+                - expr: "system.loadAverage < 1"
+                - expr: "user.experienceYears > 10"
+          - expr: "context.weekDay !== 'Wednesday'"
+  Expected: false
+  Explanation: "The scenario fails because it’s not Wednesday, and none of the any conditions pass."
+
+- scenarioID: "17"
+  Description: "Complex logical and arithmetic grouping with ternary"
+  Condition:
+    match:
+      expr: "(user.permissions.includes('admin') ? system.uptime > 200 : context.isHoliday) && resource.owner === 'admin'"
+  Expected: true
+  Explanation: "The scenario passes because the user has admin permissions, system uptime is over 200, and the resource is owned by an admin."
+
+- scenarioID: "18"
+  Description: "All conditions with nested any and ternary operations"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(user.age * 2) < 60"
+          - any:
+              of:
+                - expr: "system.maintenanceMode"
+                - expr: "context.weekDay === 'Saturday'"
+          - expr: "resource.tags.includes('projectA')"
+  Expected: true
+  Explanation: "The scenario passes because the user's age multiplied by 2 is under 60, and the resource tag includes 'projectA'."
+
+- scenarioID: "19"
+  Description: "Complex arithmetic and logical grouping with none"
+  Condition:
+    match:
+      none:
+        of:
+          - expr: "resource.type === 'video'"
+          - expr: "(context.currentHour / 2) > 10"
+          - expr: "(user.experienceYears + user.age) < 35"
+  Expected: false
+  Explanation: "The scenario fails because the user's combined age and experience is under 35."
+
+- scenarioID: "20"
+  Description: "Nested any and all with complex conditions"
+  Condition:
+    match:
+      any:
+        of:
+          - all:
+              of:
+                - expr: "user.role === 'guest'"
+                - expr: "system.uptime < 100"
+          - none:
+              of:
+                - expr: "context.weekDay === 'Friday'"
+                - expr: "resource.accessLevel === 'confidential'"
+  Expected: false
+  Explanation: "The scenario fails because it's Friday and the resource access level is confidential."
+
+- scenarioID: "21"
+  Description: "All conditions with complex nested arithmetic"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(user.age - 10) > 15"
+          - expr: "(resource.size + 100) < 700"
+          - expr: "system.uptime > 200"
+  Expected: true
+  Explanation: "The scenario passes because the user's age minus 10 is over 15, the resource size plus 100 is under 700, and the system uptime is over 200."
+
+- scenarioID: "22"
+  Description: "Any conditions with complex logical grouping"
+  Condition:
+    match:
+      any:
+        of:
+          - expr: "context.event === 'backup'"
+          - expr: "resource.type === 'image' && context.timeOfDay === 'night'"
+  Expected: true
+  Explanation: "The scenario passes because the resource type is an image, and it’s nighttime."
+
+- scenarioID: "23"
+  Description: "Complex logical and arithmetic grouping with all"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(user.experienceYears * 2) > 8"
+          - expr: "resource.owner === 'admin'"
+          - none:
+              of:
+                - expr: "system.loadAverage > 3"
+                - expr: "context.isHoliday"
+  Expected: false
+  Explanation: "The scenario fails because it is a holiday."
+
+- scenarioID: "24"
+  Description: "Nested none with multiple arithmetic checks"
+  Condition:
+    match:
+      none:
+        of:
+          - expr: "(resource.size / 10) > 60"
+          - expr: "(user.age + user.experienceYears) > 35"
+          - expr: "(context.currentHour - 20) > 2"
+  Expected: false
+  Explanation: "The scenario passes because none of these conditions are true."
+
+- scenarioID: "25"
+  Description: "All conditions with complex arithmetic and logical operations"
+  Condition:
+    match:
+      all:
+        of:
+          - expr: "(user.age * 2) + 5 > 60"
+          - expr: "resource.tags.includes('internal')"
+          - expr: "system.uptime > 300 || context.weekDay === 'Friday'"
+  Expected: true
+  Explanation: "The scenario passes because the arithmetic condition holds, the resource is tagged 'internal', and the uptime is over 300."
+

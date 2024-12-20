@@ -1,0 +1,22 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/variables/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "variables",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines variables used within a Satori process, including type and message type.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "type": { "type": "string" },
+      "messageType": { "type": "string" },
+      "element": { "type": "string" },
+      "description": { "type": "string" },
+      "source": { "type": "string" }
+    },
+    "required": ["type"]
+  }
+}
+

@@ -1,0 +1,18 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/sourceAttributes/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "sourceAttributes",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The SourceAttributes schema defines attributes for tracking the origin of the data, including attribute name and values.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "attributes": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}
+

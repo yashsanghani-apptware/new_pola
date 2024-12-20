@@ -1,0 +1,21 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/reply/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "reply",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Represents a reply activity in a Satori process, which sends a message back to a service.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "type": { "enum": ["reply"] },
+    "id": { "type": "string" },
+    "name": { "type": "string" },
+    "service": { "type": "string" },
+    "operation": { "type": "string" },
+    "variable": { "type": "string" },
+    "faultName": { "type": "string" }
+  },
+  "required": ["type", "id", "service", "operation", "variable"]
+}
+

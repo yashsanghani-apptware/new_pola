@@ -1,0 +1,22 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/schemasSchema/2.8",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "schemasSchema",
+  "$schemaVersion": "2.8",
+  "$author": "Surendra Reddy",
+  "$description": "The SchemasSchema schema defines a structure for a schema reference, with optional ignore conditions and other attributes.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["ref"],
+  "additionalProperties": false,
+  "properties": {
+    "ignoreWhen": {
+      "$ref": "http://registry.agsiri.com/v1/schemas/schemasIgnoreWhen/2.8"
+    },
+    "ref": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
+

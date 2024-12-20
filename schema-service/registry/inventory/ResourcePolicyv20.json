@@ -1,0 +1,38 @@
+{
+  "$id": "http://registry.agsiri.com/v1/schemas/resourcePolicy/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "resourcePolicy",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines a resource policy within a Satori process, outlining the actions and conditions applicable to resources.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "properties": {
+    "id": { "type": "string" },
+    "resource": { "type": "string" },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "actions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "effect": {
+            "type": "string",
+            "enum": ["EFFECT_ALLOW", "EFFECT_DENY"]
+          },
+          "conditions": {
+            "type": "string",
+            "description": "An expression in JSONPath language.",
+            "pattern": "^\\$.*"
+          }
+        },
+        "required": ["actions", "effect"]
+      }
+    }
+  },
+  "required": ["id", "resource", "policies"]
+}
+

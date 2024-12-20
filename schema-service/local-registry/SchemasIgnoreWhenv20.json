@@ -1,0 +1,24 @@
+{
+  "$id": "http://registry.agsiri.com:8080/v1/schemas/schemasIgnoreWhen/2.20",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schemaName": "schemasIgnoreWhen",
+  "$schemaVersion": "2.20",
+  "$author": "Surendra Reddy",
+  "$description": "Defines the conditions under which a schema reference should be ignored in the Satori process.",
+  "$license": "Confidential Property of 451 Labs",
+  "type": "object",
+  "required": ["actions"],
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  }
+}
+

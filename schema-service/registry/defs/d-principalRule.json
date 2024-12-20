@@ -1,0 +1,35 @@
+{
+  "name": "principalRule",
+  "version": "2.6",
+  "author": "Surendra Reddy",
+  "description": "Defines rules for controlling principal-based access in the system.",
+  "license": "Confidential Property of 451 Labs",
+  "seeAlso": [],
+  "category": "Access Control",
+  "context": "Used to define rules for access control based on principals (users, roles, groups).",
+  "story": "This definition outlines the rules for controlling access based on principals within the system.",
+  "definition": {
+    "principalRule": {
+      "type": "object",
+      "required": [
+        "resource",
+        "actions"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "actions": {
+          "type": "array",
+          "items": {
+            "$ref": "http://registry.agsiri.com:8080/v1/definitions/principalRuleAction/2.6"
+          },
+          "minItems": 1
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
+

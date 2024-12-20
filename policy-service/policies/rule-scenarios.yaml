@@ -1,0 +1,335 @@
+scenarios:
+  - scenarioID: "1"
+    Description: "Allow create and update if the resource is confidential, the user is remote, and it’s not a holiday, or if the system is not in maintenance mode."
+    rules:
+      - actions: 
+          - create
+          - update
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.accessLevel === 'confidential' && user.location === 'remote' && !context.isHoliday"
+                - expr: "system.uptime > 200 || !system.maintenanceMode"
+    
+      - actions: 
+          - delete
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "user.role !== 'Admin' || system.loadAverage > 1.5"
+
+  - scenarioID: "2"
+    Description: "Deny list and search if it’s night, the system is in maintenance mode, or the resource is flagged critical."
+    rules:
+      - actions: 
+          - list
+          - search
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            any: 
+              of:
+                - expr: "context.timeOfDay === 'night'"
+                - expr: "system.maintenanceMode"
+                - expr: "resource.tags.includes('critical')"
+    
+      - actions: 
+          - subscribe
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            none: 
+              of:
+                - expr: "resource.type === 'image' && context.event === 'maintenance'"
+                - expr: "!user.permissions.includes('read')"
+    
+  - scenarioID: "3"
+    Description: "Allow query and share if the resource is internal, the user has read permission, and the current hour is between 8 and 18."
+    rules:
+      - actions: 
+          - query
+          - share
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "'internal' in resource.tags && user.permissions.includes('read')"
+                - expr: "context.currentHour >= 8 && context.currentHour <= 18"
+    
+      - actions: 
+          - delete
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.accessLevel === 'confidential'"
+                - expr: "user.role !== 'Admin' || resource.size > 500"
+    
+  - scenarioID: "4"
+    Description: "Deny create if the resource is archived and it’s Friday; allow update if the user is in IT and system uptime is above 100."
+    rules:
+      - actions: 
+          - create
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "resource.accessLevel === 'archived' && context.weekDay === 'Friday'"
+    
+      - actions: 
+          - update
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "user.department === 'IT'"
+                - expr: "system.uptime > 100 && context.currentHour < 20"
+    
+  - scenarioID: "5"
+    Description: "Allow access if the user has admin rights or the resource is flagged for project A and it’s not a holiday."
+    rules:
+      - actions: 
+          - access
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "user.role === 'Admin' || ('projectA' in resource.tags && !context.isHoliday)"
+    
+      - actions: 
+          - share
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            none: 
+              of:
+                - expr: "user.role === 'Guest'"
+                - expr: "resource.accessLevel === 'confidential' && context.weekDay === 'Friday'"
+    
+  - scenarioID: "6"
+    Description: "Deny update if the resource is active, it’s a holiday, and the system load is high; allow search if the user has search permission or the resource is public."
+    rules:
+      - actions: 
+          - update
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.status === 'active'"
+                - expr: "context.isHoliday && system.loadAverage > 1.5"
+    
+      - actions: 
+          - search
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            any: 
+              of:
+                - expr: "user.permissions.includes('search')"
+                - expr: "resource.accessLevel === 'public'"
+    
+  - scenarioID: "7"
+    Description: "Allow create and subscribe if the resource is new, it’s not in maintenance mode, and the user is not blacklisted."
+    rules:
+      - actions: 
+          - create
+          - subscribe
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.status === 'new' && !system.maintenanceMode"
+                - expr: "!user.blacklisted"
+    
+      - actions: 
+          - delete
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "resource.locked === true || system.uptime < 50"
+    
+  - scenarioID: "8"
+    Description: "Allow edit if the resource is flagged for review, the user has write permissions, and the load average is under 2."
+    rules:
+      - actions: 
+          - edit
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.tags.includes('internal') && resource.accessLevel === 'confidential'"
+                - expr: "user.permissions.includes('write')"
+    
+      - actions: 
+          - create
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            none: 
+              of:
+                - expr: "user.role === 'Manager' && context.currentHour < 20"
+    
+  - scenarioID: "9"
+    Description: "Allow access and list if the resource is internal, it’s not a holiday, and the user has access rights."
+    rules:
+      - actions: 
+          - access
+          - list
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "'internal' in resource.tags && context.isHoliday === false"
+                - expr: "user.permissions.includes('access')"
+    
+      - actions: 
+          - share
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "resource.accessLevel === 'confidential' && context.weekDay === 'Friday'"
+    
+  - scenarioID: "10"
+    Description: "Deny delete if the resource is critical, the user is not an admin, or it’s night."
+    rules:
+      - actions: 
+          - delete
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.tags.includes('critical')"
+                - expr: "user.role !== 'Admin'"
+                - expr: "context.timeOfDay === 'night'"
+    
+      - actions: 
+          - update
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.status === 'development'"
+                - expr: "user.role === 'Developer' && context.weekDay !== 'Sunday'"
+    
+  - scenarioID: "11"
+    Description: "Allow search and query if the resource is public, the user has query permissions, and the system is not under high load."
+    rules:
+      - actions: 
+          - search
+          - query
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.accessLevel === 'public'"
+                - expr: "user.permissions.includes('query')"
+                - expr: "system.loadAverage < 2.0"
+    
+      - actions: 
+          - create
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "user.role === 'Guest' || resource.locked === true"
+    
+  - scenarioID: "12"
+    Description: "Allow delete if the user is an admin, the resource is deprecated, or it’s a weekday and the user is in IT."
+    rules:
+      - actions: 
+          - delete
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            any: 
+              of:
+                - expr: "user.role === 'Admin'"
+                - expr: "resource.status === 'deprecated'"
+                - expr: "context.weekDay !== 'Saturday' && user.department === 'IT'"
+    
+      - actions: 
+          - access
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "resource.accessLevel === 'private'"
+    
+  - scenarioID: "13"
+    Description: "Allow subscribe and share if the user is subscribed, the resource is shareable, and it’s not a holiday."
+    rules:
+      - actions: 
+          - subscribe
+          - share
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "user.permissions.includes('subscribe') && !context.isHoliday"
+                - expr: "resource.accessLevel !== 'restricted'"
+    
+      - actions: 
+          - delete
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            none: 
+              of:
+                - expr: "user.role === 'Admin'"
+    
+  - scenarioID: "14"
+    Description: "Allow edit and update if the user has edit permissions, the resource is flagged for project A, and it’s not a Friday."
+    rules:
+      - actions: 
+          - edit
+          - update
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "user.permissions.includes('edit')"
+                - expr: "'projectA' in resource.tags"
+                - expr: "context.weekDay !== 'Friday'"
+    
+      - actions: 
+          - create
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            expr: "resource.locked === true || system.uptime < 50"
+    
+  - scenarioID: "15"
+    Description: "Deny all actions if the resource is under legal hold, or if it’s a holiday and the system is under maintenance."
+    rules:
+      - actions: 
+          - create
+          - update
+          - delete
+          - share
+        effect: "EFFECT_DENY"
+        condition: 
+          match: 
+            all: 
+              of:
+                - expr: "resource.legalHold === true"
+                - expr: "context.isHoliday && system.maintenanceMode"
+    
+      - actions: 
+          - search
+        effect: "EFFECT_ALLOW"
+        condition: 
+          match: 
+            expr: "user.permissions.includes('legal') || !context.isHoliday"
+

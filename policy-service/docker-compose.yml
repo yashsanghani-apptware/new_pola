@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  policy-service:
+    build: .
+    container_name: policy-service
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGO_URI=mongodb+srv://saddamshah:hOzlWf1NF6Xnx7aA@agsiri.nk7ua3s.mongodb.net/polaService
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=agsiri2023
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - shared-network
+
+  mongo:
+    image: mongo:4.4
+    container_name: policy-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - shared-network
+
+  redis:
+    image: redis:6
+    container_name: policy-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - shared-network
+
+# Named volumes for persistent data storage
+volumes:
+  mongo-data:
+
+# Shared network for inter-service communication
+networks:
+  shared-network:
+    external: true  # This assumes you have an external network named 'shared-network'

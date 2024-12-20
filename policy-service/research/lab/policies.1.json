@@ -1,0 +1,80 @@
+[
+    {
+        "apiVersion": "api.agsiri.dev/v1",
+        "resourcePolicy": {
+            "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/farm001",
+            "version": "1.0",
+            "rules": [
+                {
+                    "actions": ["read", "edit"],
+                    "effect": "EFFECT_ALLOW",
+                    "condition": {
+                        "match": {
+                            "all": {
+                                "of": [
+                                    { "expr": "userRole === 'admin'" },
+                                    { "expr": "yearsExperience > 5" }
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "principalPolicy": {
+            "principal": "user123",
+            "version": "1.0",
+            "rules": [
+                {
+                    "resource": "ari:agsiri:dataroom:us:123456789012:dataroom/farm001",
+                    "actions": [
+                        {
+                            "action": "read",
+                            "effect": "EFFECT_ALLOW",
+                            "condition": {
+                                "match": {
+                                    "all": {
+                                        "of": [
+                                            { "expr": "resource === 'ari:agsiri:dataroom:us:123456789012:dataroom/farm001'" },
+                                            { "expr": "timeOfDay === 'daytime'" }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "auditInfo": {
+            "createdBy": "admin",
+            "createdAt": "2024-08-21T06:40:33.623Z"
+        },
+        "exportVariables": {
+            "name": "maxFileSize",
+            "definitions": {
+                "maxFileSize": "50MB"
+            }
+        },
+        "derivedRoles": {
+            "name": "SeniorAdmin",
+            "definitions": [
+                {
+                    "name": "Admin",
+                    "parentRoles": ["admin"],
+                    "condition": {
+                        "match": {
+                            "all": {
+                                "of": [
+                                    { "expr": "userRole === 'admin'" },
+                                    { "expr": "yearsExperience > 10" }
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+]
+

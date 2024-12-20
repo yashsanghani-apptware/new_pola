@@ -1,0 +1,28 @@
+{
+  "apiVersion": "api.agsiri.dev/v1",
+  "description": "Assign derived role based on resource location.",
+  "derivedRoles": {
+    "name": "LocationBasedRoles",
+    "definitions": [
+      {
+        "name": "GB_Editor",
+        "parentRoles": ["editor"],
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                {"expr": "R.attr.geographies.contains('GB')"},
+                {"expr": "P.attr.geography == 'GB'"}
+              ]
+            }
+          }
+        }
+      }
+    ]
+  },
+  "auditInfo": {
+    "createdBy": "system",
+    "createdAt": "2024-08-19T12:20:00Z"
+  }
+}
+

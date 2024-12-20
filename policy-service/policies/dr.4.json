@@ -1,0 +1,68 @@
+{
+  "apiVersion": "api.pola.dev/v1",
+  "name": "RoleHierarchy",
+  "derivedRoles": {
+    "name": "RoleHierarchyForProjects",
+    "definitions": [
+      {
+        "name": "SeniorManager",
+        "parentRoles": ["Manager"],
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                { "expr": "P.yearsOfExperience >= 10" },
+                { "expr": "P.teamSize > 50" }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "Manager",
+        "parentRoles": ["TeamLead"],
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                { "expr": "P.yearsOfExperience >= 5" },
+                { "expr": "P.teamSize > 10" }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "TeamLead",
+        "parentRoles": ["Engineer"],
+        "condition": {
+          "match": {
+            "all": {
+              "of": [
+                { "expr": "P.yearsOfExperience >= 2" },
+                { "expr": "P.certifications.includes('leadership-training')" }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "name": "Engineer",
+        "parentRoles": ["BaseRole"],  
+        "condition": {
+          "match": {
+            "expr": "P.role === 'engineer'"
+          }
+        }
+      }
+    ],
+    "variables": {
+      "import": ["yearsOfExperience", "teamSize", "certifications"]
+    }
+  },
+  "auditInfo": {
+    "createdBy": "user123",
+    "createdAt": "2024-08-24T12:34:56Z"
+  }
+}
+
